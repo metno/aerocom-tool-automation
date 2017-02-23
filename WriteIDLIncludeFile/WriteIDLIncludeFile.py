@@ -523,7 +523,7 @@ if __name__ == '__main__':
 	SupportedObsNetworks=','.join(dict_SupportStruct['OBSNETWORKS'].keys())
 
 	dict_Param={}
-	parser = argparse.ArgumentParser(description='Write IDL include file and model list file for the aerocom-tools \n\nexample:\n./WriteIDLIncludeFile/WriteIDLIncludeFile.py --idloutfile ../aerocom-tools/batching/idl.include.od550aer.pro --variable od550aer --listoutfile ../aerocom-tools/batching/modellist.0d550aer.batching.txt --years 2010,2011\n\n')
+	parser = argparse.ArgumentParser(description='Write IDL include file and model list file for the aerocom-tools \n\nexample:\n./WriteIDLIncludeFile/WriteIDLIncludeFile.py --idloutfile ../aerocom-tools/batching/idl.include.od550aer.pro --variable od550aer --listoutfile ../aerocom-tools/batching/modellist.od550aer.batching.txt --years 2010,2011\n\n')
 	parser.add_argument("variable", help="variable name to use; Only one variable usable")
 	parser.add_argument("model", help="model names to use; can be a comma separated list; use OBSERVATIONS-ONLY for no model")
 	parser.add_argument("idloutfile", help="name of the IDL include file")
