@@ -81,6 +81,15 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['Export']="""
 		i_WriteStationValues=3
 	"""
+	dict_IncludeFileData['FLAGS']['HTAPFILTERS']= """
+		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
+		'EURhtap','OCNhtap','SEAhtap', 'LANDhtap','NAMhtap','ASIA','WORLD','NAFRICA','NAMERICA','SAMERICA',$
+		'EUROPE','EASTASIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+	"""
+	dict_IncludeFileData['FLAGS']['HTAPFILTERSONLY']= """
+		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
+		'EURhtap','OCNhtap','SEAhtap', 'LANDhtap','NAMhtap']
+	"""
 	############ Variables #######################
 	dict_IncludeFileData['VARS']={}
 	#dict_IncludeFileData['VARS']['']="""
@@ -470,6 +479,9 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False):
 	#no send flag
 	if 'NOSEND' in dict_Param.keys():
 		RetValArr.append(GetIDLIncludeFileText('FLAGS','NOSEND'))
+	#include HTAP filters
+	if 'HTAPFILTERS' in dict_Param.keys():
+		RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
 			
 	
 	#RetValArr.append(GetIDLIncludeFileText(''))
@@ -523,7 +535,7 @@ if __name__ == '__main__':
 	SupportedObsNetworks=','.join(dict_SupportStruct['OBSNETWORKS'].keys())
 
 	dict_Param={}
-	parser = argparse.ArgumentParser(description='Write IDL include file and model list file for the aerocom-tools \n\nexample:\n./WriteIDLIncludeFile/WriteIDLIncludeFile.py --idloutfile ../aerocom-tools/batching/idl.include.od550aer.pro --variable od550aer --listoutfile ../aerocom-tools/batching/modellist.od550aer.batching.txt --years 2010,2011\n\n')
+	parser = argparse.ArgumentParser(description='Write IDL include file and model list file for the aerocom-tools \n\nexample:\nWriteIDLIncludeFile.py od550gt1aer IASI_DLR.v5.2.All,IASI_DLR.v5.2.AN,IASI_DLR.v5.2.DN ../../aerocom-tools/batching/CCI_IASI_od550gt1aer.pro ../../aerocom-tools/batching/CCI_IASI_DLR.v5.2.txt 2007,2008,2009,2010,2011,2012,2013,2014,2015\n\n')
 	parser.add_argument("variable", help="variable name to use; Only one variable usable")
 	parser.add_argument("model", help="model names to use; can be a comma separated list; use OBSERVATIONS-ONLY for no model")
 	parser.add_argument("idloutfile", help="name of the IDL include file")
@@ -534,6 +546,7 @@ if __name__ == '__main__':
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
 	parser.add_argument("--nosend", help="set to 1 to switch off webserver upload")
 	parser.add_argument("--listvars", help="set to 1 to list the supported variables")
+	parser.add_argument("--htapfilters", help="set to 1 to also include the HTAP pixel based filters")
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -569,6 +582,9 @@ if __name__ == '__main__':
 
 	if args.nosend:
 		dict_Param['NOSEND']=args.nosend
+
+	if args.htapfilters:
+		dict_Param['HTAPFILTERS']=args.htapfilters
 
 	#some error handling
 	if 'ObsYears' not in dict_Param.keys():
