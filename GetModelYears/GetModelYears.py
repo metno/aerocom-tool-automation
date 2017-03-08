@@ -23,8 +23,8 @@ def GetModelYears(ModelFolder, Variable=None, VerboseFlag=False, DebugFlag=False
 	#examples
 	#aerocom3_CAM5.3-Oslo_AP3-CTRL2016-PD_od550aer_Column_2010_monthly.nc
 	#aerocom.AATSR_ensemble.v2.6.daily.od550aer.2012.nc
+	Years=[]
 	if os.path.isdir(ModelFolder):
-		Years=[]
 		if Variable == None:
 			files=glob.glob(ModelFolder+'/*.nc')
 		else:
@@ -42,10 +42,17 @@ def GetModelYears(ModelFolder, Variable=None, VerboseFlag=False, DebugFlag=False
 		#make sorted list of unique years
 		Years=(sorted(OrderedDict.fromkeys(Years)))
 
-		if VerboseFlag:
-			print(Years)
-		if DebugFlag:
-			pdb.set_trace()
+	else:
+		sys.stderr.write("Error: Model folder does not exist: \n")
+		sys.stderr.write(ModelFolder+"\n")
+		sys.stderr.write('Exiting.\n')
+		sys.exit(3)
+
+
+	if VerboseFlag:
+		print(Years)
+	if DebugFlag:
+		pdb.set_trace()
 
 	return Years
 
