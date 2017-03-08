@@ -23,8 +23,8 @@ def GetModelVars(ModelFolder, VerboseFlag=False, DebugFlag=False):
 	#examples
 	#aerocom3_CAM5.3-Oslo_AP3-CTRL2016-PD_od550aer_Column_2010_monthly.nc
 	#aerocom.AATSR_ensemble.v2.6.daily.od550aer.2012.nc
+	Vars=[]
 	if os.path.isdir(ModelFolder):
-		Vars=[]
 		files=glob.glob(ModelFolder+'/*.nc')
 		for file in files:
 			#divide the type based on the # of underscores in a file name
@@ -43,6 +43,11 @@ def GetModelVars(ModelFolder, VerboseFlag=False, DebugFlag=False):
 			print(Vars)
 		if DebugFlag:
 			pdb.set_trace()
+	else:
+		sys.stderr.write("Error: Model folder does not exist: \n")
+		sys.stderr.write(ModelFolder+"\n")
+		sys.stderr.write('Exiting.\n')
+		sys.exit(3)
 
 	return Vars
 
