@@ -39,11 +39,14 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 
 
 	#PLEASE NOTE THAT THE VARIABLE NAMES ARE ACCORDING TO THE AEROCOM PROTOCOL 
-	#AND ACCORDING TO THE AEROCOM-TOOLS
+	#AND NOT ACCORDING TO THE AEROCOM-TOOLS
 	
 	#
-	#the htap region names are left out here because they use puxel based filters that need to be
+	#the htap region names are left out in the common block,
+	#because they use puxel based filters that need to be
 	#in the model resolution
+	#If we want to include that, we need an automatism to calculate the pixel based filters in model 
+	#resolution
 
 	dict_IncludeFileData={}
 	#common block
@@ -510,7 +513,10 @@ def WriteModellistFile(OutFile, Models, Years, ObsYears, VerboseFlag=False, Debu
 	DataArr=[]
 	DataArr.append("#file created by the aerocom automation tools")
 	DataArr.append("c_Years=('"+Years.replace(',',"' '")+"')")
-	DataArr.append("c_Models=('"+"' '".join(Models)+"')")
+	if isinstance(Models,list):
+		DataArr.append("c_Models=('"+"' '".join(Models)+"')")
+	else:
+		DataArr.append("c_Models=('"+Models+"')")
 	DataArr.append("c_ObsYears=('"+ObsYears.replace(',',"' '")+"')")
 	DataArr.append("")
 
@@ -532,7 +538,7 @@ if __name__ == '__main__':
 
 	#Get the constant dictionary to fill the help file accordingly
 	dict_SupportStruct=GetIDLIncludeFileText('nogroup','whatever', all=True)
-	SupportedObsNetworks=','.join(dict_SupportStruct['OBSNETWORKS'].keys())
+	SupportedObsNetworks=', '.join(dict_SupportStruct['OBSNETWORKS'].keys())
 
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='Write IDL include file and model list file for the aerocom-tools \n\nexample:\nWriteIDLIncludeFile.py od550gt1aer IASI_DLR.v5.2.All,IASI_DLR.v5.2.AN,IASI_DLR.v5.2.DN ../../aerocom-tools/batching/CCI_IASI_od550gt1aer.pro ../../aerocom-tools/batching/CCI_IASI_DLR.v5.2.txt 2007,2008,2009,2010,2011,2012,2013,2014,2015\n\n')
@@ -540,13 +546,13 @@ if __name__ == '__main__':
 	parser.add_argument("model", help="model names to use; can be a comma separated list; use OBSERVATIONS-ONLY for no model")
 	parser.add_argument("idloutfile", help="name of the IDL include file")
 	parser.add_argument("listoutfile", help="name of the modellist file")
-	parser.add_argument("--obsnetwork", help="observations network. Supported are "+SupportedObsNetworks+". If not used the standard obs network name from the aerocom-tools will be used")
-	parser.add_argument("--plotregions", help="plot regions for map based plots to use; can be a comma separated list; e.g. WORLD,EUROPE. If not used a standard set of regions will be used")
 	parser.add_argument("years", help="years to run; can be a comma separated list")
+	parser.add_argument("-o","--obsnetwork", help="observations network. Supported are "+SupportedObsNetworks+". If not used the standard obs network name from the aerocom-tools will be used")
+	parser.add_argument("--plotregions", help="plot regions for map based plots to use; can be a comma separated list; e.g. WORLD,EUROPE. If not used a standard set of regions will be used")
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
-	parser.add_argument("--nosend", help="set to 1 to switch off webserver upload")
-	parser.add_argument("--listvars", help="set to 1 to list the supported variables")
-	parser.add_argument("--htapfilters", help="set to 1 to also include the HTAP pixel based filters")
+	parser.add_argument("-n","--nosend", help="switch off webserver upload", action='store_true')
+	parser.add_argument("-l","--listvars", help="list the supported variables", action='store_true')
+	parser.add_argument("--htapfilters", help="also include the HTAP pixel based filters",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -579,6 +585,9 @@ if __name__ == '__main__':
 
 	if args.obsyear:
 		dict_Param['ObsYear']=args.obsyear
+	else:
+		sys.stderr.write("WARNING: No observation year provided. Falling back to using the model years\n")
+		dict_Param['ObsYear']='0000'
 
 	if args.nosend:
 		dict_Param['NOSEND']=args.nosend
@@ -586,15 +595,10 @@ if __name__ == '__main__':
 	if args.htapfilters:
 		dict_Param['HTAPFILTERS']=args.htapfilters
 
-	#some error handling
-	if 'ObsYears' not in dict_Param.keys():
-		sys.stderr.write("WARNING: No observation year provided. Falling back to using the model years\n")
-		dict_Param['ObsYears']='0000'
-
 	#if '' not in dict_Param.keys():
 	#pdb.set_trace()
 	RetVal=WriteIDLIncludeFile(dict_Param,DebugFlag=False)
-	RetVal=WriteModellistFile(dict_Param['ListOutFile'], dict_Param['ModelName'], dict_Param['Years'], dict_Param['ObsYears'])
+	RetVal=WriteModellistFile(dict_Param['ListOutFile'], dict_Param['ModelName'], dict_Param['Years'], dict_Param['ObsYear'])
 
 	sys.stderr.write("The files \n"+dict_Param['IDLOutFile']+"\nand\n"+dict_Param['ListOutFile']+"\n")
 	sys.stderr.write("were written\n")
