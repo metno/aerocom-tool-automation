@@ -36,7 +36,7 @@ import sys
 
 def GetModelDir(ModelArr, VerboseFlag=False, DebugFlag=False, c_ConfigFile=None ):
 	if c_ConfigFile == None:
-		c_ConfigFile='../folders.ini'
+		c_ConfigFile='folders.ini'
 	dict_Config={}
 	ModelDirs={}
 	if os.path.isfile(c_ConfigFile):
@@ -57,29 +57,35 @@ def GetModelDir(ModelArr, VerboseFlag=False, DebugFlag=False, c_ConfigFile=None 
 				if os.path.isdir(FolderToSearchIn):
 					dir=glob.glob(FolderToSearchIn+ModelName)
 					if len(dir) > 0:
-						ModelDirs[ModelName]=dir[0]
+						ModelDirs[ModelName]=dir
 						if VerboseFlag:
 							print('Found: ',ModelDirs[ModelName])
-						break
+						#break
 					else:
 						continue
 				else:
 					if VerboseFlag:
 						print('directory: ',FolderToSearchIn, ' does not exist')
 					
-		if VerboseFlag:
-			print(ModelDirs)
-		if DebugFlag:
-			pdb.set_trace()
+	else:
+		sys.stderr.write('Error: Config file '+c_ConfigFile+' not found. Exiting.\n')
+		sys.exit(2)
+
+	if VerboseFlag:
+		print(ModelDirs)
+	if DebugFlag:
+		pdb.set_trace()
 
 	return ModelDirs
 
 
 if __name__ == '__main__':
 	dict_Param={}
-	parser = argparse.ArgumentParser(description='GetModelDir\nProgram to find the actual model for a given model name\n\n')
-	parser.add_argument("model", help="model names to use; can be a comma separated list;")
-	parser.add_argument("--config", help="use another config file")
+	parser = argparse.ArgumentParser(description='GetModelDir: Program to find the actual model directory for a given model name\n\n',
+	epilog='Returns a colon separated list for each given model')
+	parser.add_argument("model", help="model names to use; can be a comma separated list; shell wildcards can be used")
+	parser.add_argument("-c","--config", help="use another config file; ./folder.ini if not given", default='folders.ini')
+	#parser.add_argument("-t", help="test", action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -89,13 +95,20 @@ if __name__ == '__main__':
 
 	dict_Param['ConfigFile']=False
 	if args.config:
+		#pdb.set_trace()
 		if os.path.isfile(args.config): 
 			dict_Param['ConfigFile']=args.config
 		else:
-			sys.stderr.write('Error: The supplied config file does not exist. Exiting.\n')
-			sys.exit(1)
+			#try script directory
+			IniPath=os.path.join(os.path.dirname(sys.argv[0]),args.config)
+			pdb.set_trace()
+			if not os.path.isfile(IniPath):
+				sys.stderr.write('Error: The supplied config file does not exist. Exiting.\n')
+				sys.exit(1)
+			else:
+				dict_Param['ConfigFile']=IniPath
 
-	ModelDirs=GetModelDir(dict_Param['ModelName'], VerboseFlag=False)
-	for Model in ModelDirs.keys():
-		sys.stdout.write(':'.join([Model,ModelDirs[Model]])+'\n')
+	ModelDirs=GetModelDir(dict_Param['ModelName'], c_ConfigFile=dict_Param['ConfigFile'])
+	for Model in ModelDirs:
+		sys.stdout.write(':'.join([Model,','.join(ModelDirs[Model])])+'\n')
 
