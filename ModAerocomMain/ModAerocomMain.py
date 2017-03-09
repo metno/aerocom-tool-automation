@@ -34,7 +34,7 @@ def ModAerocomMain(Path, IncFile, VerboseFlag=False, DebugFlag=False):
 			with open(FileName) as FHandle:
 				FileString=FHandle.read()
 			#create a uuid and append the host name for easier removal later on
-			UUID='_'.join([str(uuid.uuid4()).replace('-','_'),socket.gethostname()])
+			UUID='_'.join([str(uuid.uuid4()),socket.gethostname()]).replace('-','_')
 			#New procedure name
 			NewMainStr='aerocom_main_'+UUID
 			NewMainFile=NewMainStr+'.pro'
