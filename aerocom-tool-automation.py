@@ -7,8 +7,7 @@
 # 
 # The purpose of this program is to plot all possible plots of a new 
 # model version
-# At first we will need a model directory as parameter, but 
-# the ultimate goal is to just need the model name
+# it takes a model name as parameter
 #
 #################################################################
 # Created 20170208 by Jan Griesfeller for Met Norway
@@ -69,7 +68,7 @@ def Taskinfo(Name, user=False, PrintInfo=False, RetNumber=False, VerboseFlag=Fal
 
 	return RetVal
 
-
+###################################################################################
 
 if __name__ == '__main__':
 	
@@ -79,13 +78,14 @@ if __name__ == '__main__':
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
 	parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset ${HOME}/aerocom-tools/ will be used")
 	parser.add_argument("--nosend", help="switch off webserver upload",action='store_true')
-	#parser.add_argument("-p","--print", help="switch on idl include file name printing to stdout. Might be useful for external programs",action='store_true')
+	parser.add_argument("-p","--print", help="switch on idl include file name printing to stdout. Might be useful for external programs",action='store_true')
 	parser.add_argument("-v","--verbose", help="switch on verbosity",action='store_true')
 	parser.add_argument("--script", help="script to start; defaults to <tooldir>/StartScreenWithLogging.sh")
 	parser.add_argument("--debug", help="switch on debug mode: Do NOT start idl, just print what would be done",action='store_true')
 	parser.add_argument("--numcpu", help="Number of Processes to start. Default is using half of the number of logical cores available.",type=int)
 	parser.add_argument("--idl", help="location of the idl binary. Uses $IDL_DIR/bin/idl as default")
 
+	parser.add_argument("-o","--outputdir", help="directory where the idl include files will be put. Default is <tooldir>/batching. Directory needs to exist.")
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -93,7 +93,6 @@ if __name__ == '__main__':
 	if args.idl:
 		dict_Param['IDL']=args.idl
 	else:
-		dict_Param['IDL']='/modules/xenial/user-apps/aerocom-IDL/8.5.1/idl85/bin/idl'
 		dict_Param['IDL']=os.path.join(os.environ['IDL_DIR'],'bin','idl')
 		if os.path.isfile(dict_Param['IDL']) is False:
 			sys.stderr.write('Error: idl not found!\n')
@@ -134,7 +133,6 @@ if __name__ == '__main__':
 	if args.script:
 		dict_Param['SCRIPT']=args.script
 	else:
-		#dict_Param['SCRIPT']=os.path.join(dict_Param['ToolDir'],'StartBatchParam_MT_log.sh')
 		dict_Param['SCRIPT']=os.path.join(dict_Param['ToolDir'],'StartScreenWithLogging.sh')
 
 	if args.obsyear:
@@ -142,9 +140,14 @@ if __name__ == '__main__':
 	else:
 		dict_Param['ObsYear']='0000'
 
-
-	MaxTimeDiffDays=2.
-	
+	if args.outputdir:
+		if os.path.isdir(args.outputdir):
+			dict_Param['OutputDir']=args.outputdir
+		else:
+			sys.stderr.write('Error: supplied output dir for idl include files does not exist.\n')
+			sys.exit(2)
+	else:
+		dict_Param['OutputDir']=os.path.join(dict_Param['ToolDir'],'batching')
 
 	#get the folder the data is located in for each model
 	#non existing models are ignored and there will be no error
@@ -167,8 +170,6 @@ if __name__ == '__main__':
 			sys.stderr.write('Modeldir: '+Modeldir+'\n')
 		#loop through the Variables an determine the years they are present
 		for Var in Vars:
-			#if Var in ['ps']: 
-			#continue	#no idea why 'ps' in SupportedVars returns True
 			try:
 				Dummy=dict_SupportStruct['VARS'][Var]
 			except KeyError:
@@ -177,15 +178,10 @@ if __name__ == '__main__':
 					sys.stderr.write('Continuing with the other variables.\n')
 				continue
 
-			#if Var not in SupportedVars:
-				#if dict_Param['VERBOSE'] == True:
-					#sys.stderr.write('WARNING: Variable "'+Var+'" not supported by the aerocom-automation-tools\n')
-					#sys.stderr.write('Continuing with the other variables.\n')
-				#continue
 				
-			#now write the include file
+			#now write the idl include file
 			#one per variable
-			dict_Param['IDLOutFile']=os.path.join(dict_Param['ToolDir'],'batching',Model+'_'+Var+'_include.pro')
+			dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],Model+'_'+Var+'_include.pro')
 			dict_Param['VarName']=Var
 			#Maybe we want to check if the variable is actually supported
 			ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', Model+'_'+Var+'.txt')
@@ -209,15 +205,11 @@ if __name__ == '__main__':
 				sys.stdout.write(dict_Param['IDLOutFile']+'\n')
 				#sys.stdout.write(ModellistFile+'\n')
 
-			#if len(Years) > 0:
 			for Year in Years:
 				if dict_Param['VERBOSE'] == True:
 					sys.stderr.write('Year: '+Year+'\n')
 
 				#Create an array with program calls for IDL
-
-				#cmd=[dict_Param['SCRIPT'],dict_Param['IDLOutFile'], ModellistFile]
-
 				#pdb.set_trace()
 				OutFile, IncFile=ModAerocomMain.ModAerocomMain(dict_Param['ToolDir'], dict_Param['IDLOutFile'])
 				#IDL does not like the filename ending with '.pro', so remove that
@@ -229,8 +221,6 @@ if __name__ == '__main__':
 				CmdArr.append(cmd)
 
 
-
-	
 	user = getpass.getuser()
 	try:
 		MaxNumOfTasksToStart=dict_Param['NumCPU']
@@ -258,7 +248,7 @@ if __name__ == '__main__':
 			RetVal=subprocess.run(cmd, cwd=dict_Param['ToolDir'], check=True) 
 		else:
 			sys.stderr.write(','.join([','.join(cmd),'cwd:'+dict_Param['ToolDir']])+'\n')
-			pdb.set_trace()
+			#pdb.set_trace()
 
 
 
