@@ -431,7 +431,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 
 ####################################################################################	
 
-def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False):
+def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag=False):
 	#In this procedure we put together the pieces the user wants to an IDL include file
 	
 	OutFile=dict_Param['IDLOutFile']
@@ -481,7 +481,8 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False):
 	
 	#no send flag
 	if 'NOSEND' in dict_Param.keys():
-		RetValArr.append(GetIDLIncludeFileText('FLAGS','NOSEND'))
+		if dict_Param['NOSEND'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','NOSEND'))
 	#include HTAP filters
 	if 'HTAPFILTERS' in dict_Param.keys():
 		RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
@@ -598,7 +599,7 @@ if __name__ == '__main__':
 	#if '' not in dict_Param.keys():
 	#pdb.set_trace()
 	RetVal=WriteIDLIncludeFile(dict_Param,DebugFlag=False)
-	RetVal=WriteModellistFile(dict_Param['ListOutFile'], dict_Param['ModelName'], dict_Param['Years'], dict_Param['ObsYear'])
+	RetVal=WriteModellistFile(dict_Param['ListOutFile'], dict_Param['ModelName'], dict_Param['Years'], dict_Param['ObsYear'],ExitFlag=True)
 
 	sys.stderr.write("The files \n"+dict_Param['IDLOutFile']+"\nand\n"+dict_Param['ListOutFile']+"\n")
 	sys.stderr.write("were written\n")
