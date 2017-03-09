@@ -14,6 +14,7 @@
 
 import pdb
 from multiprocessing import Process
+import os
 
 
 def GetIDLLoc( VerboseFlag=False, DebugFlag=False):
@@ -41,6 +42,33 @@ def GetIDLLoc( VerboseFlag=False, DebugFlag=False):
 	return RetVal
 
 
+
+def StartSubProgram(MainProg, WorkDir=None, IncFile=None, VerboseFlag=False, DebugFlag=False):
+	#this is running a sub program without waiting for the  
+	#sub process to finish
+	#Then the object from subprocess.run is returned
+	
+	import subprocess
+	import os
+
+
+	RetVal=subprocess.run(MainProg,
+		cwd=WorkDir, 
+		check=True) 
+		#stdout=subprocess.PIPE, 
+		#stderr=subprocess.PIPE)
+
+	#RetVal['ParentPID']=os.getppid()
+	#RetVal['PID']=os.getpid()
+
+	if VerboseFlag:
+		print(RetVal.stdout)
+	if DebugFlag:
+		pdb.set_trace()
+
+	return RetVal
+
+##############################################################
 
 def StartIDLSingleThread(MainProg, IDL=None, WorkDir=None, IncFile=None, VerboseFlag=False, DebugFlag=False):
 	#this is running idl single threaded, and is waiting for the 
@@ -138,7 +166,8 @@ if __name__ == '__main__':
 	
 	#RetVal=StartIDLSingleThread(MainProg+IDLParameters, WorkDir=cwd, VerboseFlag=True)
 	RetVal=[]
-	RetVal=StartIDLMultiThreaded(MainProg, WorkDir=cwd, VerboseFlag=True, 
-		DebugFlag=True)
+	#RetVal=StartIDLMultiThreaded(MainProg, WorkDir=cwd, VerboseFlag=True, 
+		#DebugFlag=True)
+	RetVal=StartSubProgram(['gvim','test.txt'], WorkDir=cwd, VerboseFlag=False, DebugFlag=False)
 	#print(RetVal)
 
