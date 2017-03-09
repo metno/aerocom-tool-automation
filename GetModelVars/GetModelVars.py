@@ -31,7 +31,15 @@ def GetModelVars(ModelFolder, VerboseFlag=False, DebugFlag=False):
 			if os.path.basename(file).count('_') >= 4:
 				#newest file naming convention
 				c_DummyArr=file.split('_')
-				Vars.append(c_DummyArr[-4])
+				# include vars for the surface
+				if c_DummyArr[-3].lower() == 'surface':
+					Vars.append(c_DummyArr[-4])
+				#also include 3d vars that provide station based data
+				#and contain the string vmr
+				#in this case the variable name has to slightly changed to the aerockm phase 2 naming
+				elif c_DummyArr[-3].lower() == 'modellevelatstations':
+					if 'vmr' in c_DummyArr[-4]:
+						Vars.append(c_DummyArr[-4].replace('vmr','vmr3d'))
 			elif os.path.basename(file).count('.') >= 4:
 				c_DummyArr=file.split('.')
 				Vars.append(c_DummyArr[-3])
@@ -54,7 +62,7 @@ def GetModelVars(ModelFolder, VerboseFlag=False, DebugFlag=False):
 
 if __name__ == '__main__':
 
-	parser = argparse.ArgumentParser(description='Return the variables in an aerocom model directory\n\n')
+	parser = argparse.ArgumentParser(description='Return the variables in an aerocom model directory. Note that for the aerocom phase 3 naming scheme we return only surface variables and those that provide 3d data at stations (the file name contains the string "ModelLevelAtStations").\n')
 	parser.add_argument("dir", help="directory to check")
 
 	args = parser.parse_args()
