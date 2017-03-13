@@ -46,6 +46,10 @@ def ModAerocomMain(Path, IncFile, VerboseFlag=False, DebugFlag=False):
 			OutFile=FileName.replace('aerocom_main',NewMainStr)
 			with open(OutFile,'w') as FHandle:
 				FHandle.write(FileString)
+				FHandle.flush()
+				os.fsync(FHandle.fileno())
+
+
 			#now link the include file to the target
 			os.chdir(Path)
 			os.symlink(IncFile, NewIncFile)
