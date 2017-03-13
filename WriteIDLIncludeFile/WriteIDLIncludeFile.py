@@ -16,6 +16,7 @@
 import pdb
 import argparse 
 import sys
+import os
 
 def GetIDLIncludeFileText(Group, Variable, all=False):
 	#function to store and return parts of include files
@@ -499,6 +500,9 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 	RetVal='\n'.join(RetValArr)
 	OutHandle=open(OutFile, 'w')
 	BytesWritten=OutHandle.write(RetVal)
+	OutHandle.flush()
+	os.fsync(OutHandle.fileno())
+
 
 	if VerboseFlag:
 		print(RetVal)
@@ -525,6 +529,8 @@ def WriteModellistFile(OutFile, Models, Years, ObsYears, VerboseFlag=False, Debu
 	OutHandle=open(OutFile, 'w')
 
 	BytesWritten=OutHandle.write(RetVal)
+	OutHandle.flush()
+	os.fsync(OutHandle.fileno())
 
 	if VerboseFlag:
 		print(RetVal)
