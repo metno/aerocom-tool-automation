@@ -30,6 +30,7 @@ import multiprocessing
 from time import sleep
 import ModAerocomMain
 import datetime
+import socket
 
 
 def Taskinfo(Name, user=False, PrintInfo=False, RetNumber=False, VerboseFlag=False, DebugFlag=False):
@@ -75,8 +76,9 @@ if __name__ == '__main__':
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='aerocom-automation-tools\nProgram to automate aerocom-tool plotting based on just the model name\n\n')
 	parser.add_argument("model", help="model names to use; can be a comma separated list;")
+	parser.add_argument("--variable", help="Run only a list of variables. List has to be comma seperated.")
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
-	parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset ${HOME}/aerocom-tools/ will be used")
+	parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset ${HOME}/data/aerocom-tools/ will be used")
 	parser.add_argument("--nosend", help="switch off webserver upload",action='store_true')
 	parser.add_argument("-p","--print", help="switch on idl include file name printing to stdout. Might be useful for external programs",action='store_true')
 	parser.add_argument("-v","--verbose", help="switch on verbosity",action='store_true')
@@ -101,6 +103,9 @@ if __name__ == '__main__':
 
 	if args.numcpu:
 		dict_Param['NumCPU']=args.numcpu
+
+	if args.variable:
+		dict_Param['VariablesToRun']=args.variable.split(',')
 
 	if args.model:
 		dict_Param['ModelName']=args.model.split(',')
@@ -162,6 +167,7 @@ if __name__ == '__main__':
 	CmdArr=[]
 	#loop through the model dirs
 	Models=list(ModelFolders.keys())
+	hostname=socket.gethostname()
 	for Model in ModelFolders.keys():
 		#just the 1st model dir for now
 		Modeldir=os.path.join(ModelFolders[Model][0],'renamed')
@@ -170,10 +176,16 @@ if __name__ == '__main__':
 			sys.stderr.write('Modeldir: '+Modeldir+'\n')
 		#loop through the Variables an determine the years they are present
 		for Var in Vars:
+			if args.variable:
+				if Var not in dict_Param['VariablesToRun']:
+					if dict_Param['VERBOSE'] is True:
+						sys.stderr.write('Var '+Var+' not in provided list od vars to run. Skipping that variable.\n')
+					continue
+
 			try:
 				Dummy=dict_SupportStruct['VARS'][Var]
 			except KeyError:
-				if dict_Param['VERBOSE'] == True:
+				if dict_Param['VERBOSE'] is True:
 					sys.stderr.write('WARNING: Variable "'+Var+'" not supported by the aerocom-automation-tools\n')
 					sys.stderr.write('Continuing with the other variables.\n')
 				continue
@@ -212,10 +224,14 @@ if __name__ == '__main__':
 				#Create an array with program calls for IDL
 				#pdb.set_trace()
 				OutFile, IncFile=ModAerocomMain.ModAerocomMain(dict_Param['ToolDir'], dict_Param['IDLOutFile'])
+				if not os.path.isfile(OutFile):
+					pdb.set_trace()
+				if not os.path.isfile(IncFile):
+					pdb.set_trace()
 				#IDL does not like the filename ending with '.pro', so remove that
 				OutFile=OutFile.replace('.pro','')
 				IdlCmd=OutFile+",modelin=['"+Model+"'],yearin=['"+Year+"'],datayearin='"+dict_Param['ObsYear']+"'"
-				SessionName='_'.join([Model,Var,Year])
+				SessionName='_'.join([Model,Var,Year,hostname])
 				cmd=['/bin/bash',dict_Param['SCRIPT'], '-d', '-L', '-m', '-S', SessionName, dict_Param['IDL'], '-queue', '-e' , IdlCmd]
 				#cmd=[dict_Param['SCRIPT'], '-d', '-L', '-m', dict_Param['IDL'], '-queue', '-e' , IdlCmd]
 				CmdArr.append(cmd)
