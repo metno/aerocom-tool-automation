@@ -31,6 +31,7 @@ import os
 import glob
 import argparse 
 import sys
+import subprocess
 
 
 
@@ -85,10 +86,15 @@ if __name__ == '__main__':
 	epilog='Returns a colon separated list for each given model')
 	parser.add_argument("model", help="model names to use; can be a comma separated list; shell wildcards can be used")
 	parser.add_argument("-c","--config", help="use another config file; ./folder.ini if not given", default='folders.ini')
-	#parser.add_argument("-t", help="test", action='store_true')
-	#parser.add_argument("--", help="")
+	parser.add_argument("-l","--list", help="list files in model directory", action='store_true')
+	#parser.add_argument("-l", help="")
 
 	args = parser.parse_args()
+
+	if args.list:
+		dict_Param['ls']=args.list
+	else:
+		dict_Param['ls']=False
 
 	if args.model:
 		dict_Param['ModelName']=args.model.split(',')
@@ -110,5 +116,14 @@ if __name__ == '__main__':
 
 	ModelDirs=GetModelDir(dict_Param['ModelName'], c_ConfigFile=dict_Param['ConfigFile'])
 	for Model in ModelDirs:
-		sys.stdout.write(':'.join([Model,','.join(ModelDirs[Model])])+'\n')
+		if dict_Param['ls'] is False:
+			sys.stdout.write(':'.join([Model,','.join(ModelDirs[Model])])+'\n')
+		else:
+			#pdb.set_trace()
+			#model could be on the fs on more than one directory
+			if len(ModelDirs[Model]) > 1:
+				sys.stderr.write('WARNING: Model found on more than obe directory!\n')
+			for dir in ModelDirs[Model]:
+				for file in sorted(os.listdir(os.path.join(dir,'renamed'))):
+					sys.stdout.write(file+'\n')
 
