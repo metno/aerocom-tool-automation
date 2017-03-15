@@ -18,9 +18,11 @@ import sys
 import getpass
 import re
 import math
+import shutil
 
-
-def ATAStats(RunLogDir, ShowFailures=False, VerboseFlag=False, DebugFlag=False):
+def ATAStats(RunLogDir, MoveSuccessLogs=False, DeleteSuccessLogs=False, DoNothingFlag=False, VerboseFlag=False, 
+	AllUserFlag=False, DebugFlag=False):
+	#procedure to analyse the log files of the idl aerocom tools
 	# get a list of files
 	if os.path.isdir(RunLogDir):
 		OutData={}
@@ -29,8 +31,21 @@ def ATAStats(RunLogDir, ShowFailures=False, VerboseFlag=False, DebugFlag=False):
 		i_ModelPos=1
 		i_ModelYearPos=3
 		i_DataYearPos=5
-		logfiles=glob.glob(os.path.join(RunLogDir,'*'+getpass.getuser()+'*.log'))
+		SuccessDir=os.path.join(RunLogDir,'success')
+		try:
+			os.mkdir(SuccessDir)
+		except FileExistsError:
+			pass
+		if AllUserFlag is False:
+			logfiles=glob.glob(os.path.join(RunLogDir,'*'+getpass.getuser()+'*.log'))
+		else:
+			logfiles=glob.glob(os.path.join(RunLogDir,'*.log'))
 		for logfile in logfiles:
+			#Leave out size 0 files
+			if os.path.getsize(logfile) == 0:
+				if VerboseFlag is True:
+					sys.stderr.write(logfile+' has zero length. Skipping\n')
+				continue
 			LogName=os.path.basename(logfile)
 			OutData[LogName]={}
 			if VerboseFlag is True:
@@ -40,8 +55,13 @@ def ATAStats(RunLogDir, ShowFailures=False, VerboseFlag=False, DebugFlag=False):
 			#pdb.set_trace()
 			#now start the analysis and put the data into the OutData dict
 			#line 10 is written to the log even when idl failed to start
-			#so we can rely on it
-			c_DummyArr=FileData[10].split("'")
+			#so we should be able to rely on it
+			#UNFORTUNATELY this is not the case
+			for line in FileData:
+				if 'aerocom_main_' in line:
+					c_DummyArr=line.split("'")
+					break
+
 			OutData[LogName]['Model']=c_DummyArr[i_ModelPos]
 			OutData[LogName]['ModelYear']=c_DummyArr[i_ModelYearPos]
 			OutData[LogName]['ObsYear']=c_DummyArr[i_DataYearPos]
@@ -51,17 +71,37 @@ def ATAStats(RunLogDir, ShowFailures=False, VerboseFlag=False, DebugFlag=False):
 			#if yes, don't do a deeper analysis for now
 			OutData[LogName]['Success']=False
 			OutData[LogName]['LastLines']=FileData[-10:-1]
-			if 'total size' in FileData[-1]:
-				#assume that the job ran without problems for now
-				OutData[LogName]['Success']=True
-				#continue
-			
 			OutData[LogName]['CHECK']=[]
 			OutData[LogName]['MeanValOrig']=[]
 			OutData[LogName]['ModelDir']=''
 			OutData[LogName]['Var']=''
 			OutData[LogName]['Halted']=[]
 			OutData[LogName]['ModelFileName']=''
+			if 'total size' in FileData[-1]:
+				#assume that the job ran without problems for now if some plots were transfered
+				OutData[LogName]['Success']=True
+				#test if the logs for successfully run jobs should be moved or deleted
+				if MoveSuccessLogs is True:
+					#Move file to success directory
+					if VerboseFlag is True:
+						if DoNothingFlag is False:
+							sys.stderr.write(logfile+' moved to success directory\n')
+						else:
+							sys.stderr.write(logfile+' would have been moved to success directory\n')
+							
+					if DoNothingFlag is False:
+						shutil.move(logfile, SuccessDir)
+				elif DeleteSuccessLogs is True:
+					#delete logs of successful run jobs
+					if VerboseFlag is True:
+						if DoNothingFlag is False:
+							sys.stderr.write(logfile+' deleted\n')
+						else:
+							sys.stderr.write(logfile+' would have been deleted\n')
+					if DoNothingFlag is False:
+						os.remove(logfile)
+				#continue
+			
 
 			#Now search for some stuff
 			for line in FileData:
@@ -89,7 +129,6 @@ def ATAStats(RunLogDir, ShowFailures=False, VerboseFlag=False, DebugFlag=False):
 					continue
 
 			#pdb.set_trace()
-			#OutData[LogName]['']=
 
 			#Now build a model sorted list of file names
 			try:
@@ -102,8 +141,6 @@ def ATAStats(RunLogDir, ShowFailures=False, VerboseFlag=False, DebugFlag=False):
 		sys.stderr.write("ERROR: input directory "+RunLogDir+" not found!\n")
 		os.exit(1)
 
-	if VerboseFlag:
-		print(OutData.keys())
 	if DebugFlag:
 		pdb.set_trace()
 
@@ -120,7 +157,7 @@ def PrintAtaStats(InData,ModelInData,FailedOnlyFlag=False):
 
 	MaxModelStrLength=25
 	MaxYearLength=4
-	MaxVarLength=10
+	MaxVarLength=12
 	#Print a list of successful and failed jobs sorted by model name and variable
 	PrintDataFail={}
 	PrintDataSuccess={}
@@ -177,13 +214,30 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='ATAStats: Program to analyse run logs of the aerocom-tool-automation software\n\n',)
 	#epilog='RI#eturns some general statistics')
 	parser.add_argument("-d","--directory", help="use directory. Defaults to /lustre/storeB/project/aerocom/logs/runlog", default='/lustre/storeB/project/aerocom/logs/runlog')
-	parser.add_argument("-m","--movelogs", help="move log files to <success directory>", action='store_true')
-	parser.add_argument("--deletelogs", help="delete successful log files", action='store_true')
+	parser.add_argument("-m","--movelogs", help="move successfully run log files to <success directory>", action='store_true')
+	parser.add_argument("--deletelogs", help="delete successfully run log files", action='store_true')
 	parser.add_argument("-f","--failedonly", help="list only failed jobs", action='store_true')
+	parser.add_argument("-n","--donothing", help="do nothing, just print, what would be done", action='store_true')
+	parser.add_argument("-v","--verbose", help="be verbose", action='store_true')
+	parser.add_argument("-a","--allusers", help="analyse all logfiles, not just your own", action='store_true')
 	#parser.add_argument("-l", help="")
-	#parser.add_argument("-l","--listvars", help="list the supported variables", action='store_true')
 
 	args = parser.parse_args()
+
+	if args.allusers:
+		dict_Param['allusers']=args.allusers
+	else:
+		dict_Param['allusers']=False
+
+	if args.verbose:
+		dict_Param['verbose']=args.verbose
+	else:
+		dict_Param['verbose']=False
+
+	if args.donothing:
+		dict_Param['donothing']=args.donothing
+	else:
+		dict_Param['donothing']=False
 
 	if args.failedonly:
 		dict_Param['failedonly']=args.failedonly
@@ -211,6 +265,8 @@ if __name__ == '__main__':
 		sys.exit(1)
 		
 	#pdb.set_trace()
-	ATAStatData, ModelATAStatData=ATAStats(dict_Param['dir'], ShowFailures=True, VerboseFlag=False, DebugFlag=False)
+	ATAStatData, ModelATAStatData=ATAStats(dict_Param['dir'], DoNothingFlag=dict_Param['donothing'], 
+		AllUserFlag=dict_Param['allusers'], MoveSuccessLogs=dict_Param['movelogs'], 
+		DeleteSuccessLogs=dict_Param['deletelogs'], VerboseFlag=dict_Param['verbose'], DebugFlag=False)
 	PrintAtaStats(ATAStatData, ModelATAStatData, FailedOnlyFlag=dict_Param['failedonly'])
 
