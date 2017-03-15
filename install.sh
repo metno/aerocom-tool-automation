@@ -16,6 +16,7 @@ ln -sf ${CurrentDir}/GetModelDir/GetModelDir.py GetModelDir.py
 ln -sf ${CurrentDir}/ModAerocomMain/ModAerocomMain.py ModAerocomMain.py
 ln -sf ${CurrentDir}/folders.ini folders.ini
 ln -sf ${CurrentDir}/aerocom-tool-automation.py aerocom-tool-automation.py
+ln -sf ${CurrentDir}/ATAStats/ATAStats.py ATAStats.py
 
 IFS=$SAVEIFS
 
