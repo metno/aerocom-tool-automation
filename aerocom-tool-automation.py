@@ -78,7 +78,7 @@ if __name__ == '__main__':
 	parser.add_argument("model", help="model names to use; can be a comma separated list;")
 	parser.add_argument("--variable", help="Run only a list of variables. List has to be comma seperated.")
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
-	parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset ${HOME}/data/aerocom-tools/ will be used")
+	parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset ${HOME}/aerocom-tools/ will be used")
 	parser.add_argument("--nosend", help="switch off webserver upload",action='store_true')
 	parser.add_argument("-p","--print", help="switch on idl include file name printing to stdout. Might be useful for external programs",action='store_true')
 	parser.add_argument("-v","--verbose", help="switch on verbosity",action='store_true')
@@ -133,7 +133,10 @@ if __name__ == '__main__':
 	if args.tooldir:
 		dict_Param['ToolDir']=args.tooldir
 	else:
-		dict_Param['ToolDir']=os.path.join(os.environ['HOME'],'data','aerocom-tools')
+		dict_Param['ToolDir']=os.path.join(os.environ['HOME'],'aerocom-tools')
+	if os.path.isdir(dict_Param['ToolDir']) is False:
+		sys.stderr.write('Error: supplied tool dir does not exist.\n')
+		sys.exit(1)
 	
 	if args.script:
 		dict_Param['SCRIPT']=args.script
