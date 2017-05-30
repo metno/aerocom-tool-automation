@@ -94,6 +94,15 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
 		'EURhtap','OCNhtap','SEAhtap', 'LANDhtap','NAMhtap']
 	"""
+	dict_IncludeFileData['FLAGS']['AODTRENDONLY']="""
+		c_MicStationFilters=['AODTREND']
+	"""
+	dict_IncludeFileData['FLAGS']['AODTREND95ONLY']="""
+		c_MicStationFilters=['AODTREND95']
+	"""
+	dict_IncludeFileData['FLAGS']['AODTRENDS']="""
+		c_MicStationFilters=['AODTREND','AODTREND95']
+	"""
 	############ Variables #######################
 	dict_IncludeFileData['VARS']={}
 	#dict_IncludeFileData['VARS']['']="""
@@ -488,6 +497,10 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 	if 'HTAPFILTERS' in dict_Param.keys():
 		RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
 			
+	#include HTAP filters
+	if 'AODTRENDS' in dict_Param.keys():
+		RetValArr.append(GetIDLIncludeFileText('FLAGS','AODTRENDS'))
+			
 	
 	#RetValArr.append(GetIDLIncludeFileText(''))
 	#RetValArr.append(GetIDLIncludeFileText(''))
@@ -560,6 +573,7 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--nosend", help="switch off webserver upload", action='store_true')
 	parser.add_argument("-l","--listvars", help="list the supported variables", action='store_true')
 	parser.add_argument("--htapfilters", help="also include the HTAP pixel based filters",action='store_true')
+	parser.add_argument("--aodtrends", help="run only the filters AODTREND and AODTREND95",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -602,10 +616,13 @@ if __name__ == '__main__':
 	if args.htapfilters:
 		dict_Param['HTAPFILTERS']=args.htapfilters
 
+	if args.aodtrends:
+		dict_Param['AODTRENDS']=args.aodtrends
+
 	#if '' not in dict_Param.keys():
 	#pdb.set_trace()
 	RetVal=WriteIDLIncludeFile(dict_Param,DebugFlag=False)
-	RetVal=WriteModellistFile(dict_Param['ListOutFile'], dict_Param['ModelName'], dict_Param['Years'], dict_Param['ObsYear'],ExitFlag=True)
+	RetVal=WriteModellistFile(dict_Param['ListOutFile'], dict_Param['ModelName'], dict_Param['Years'], dict_Param['ObsYear'])
 
 	sys.stderr.write("The files \n"+dict_Param['IDLOutFile']+"\nand\n"+dict_Param['ListOutFile']+"\n")
 	sys.stderr.write("were written\n")
