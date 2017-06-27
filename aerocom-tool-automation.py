@@ -161,8 +161,9 @@ if __name__ == '__main__':
 	#non existing models are ignored and there will be no error
 	#message unless one model is present
 	#returns a list
+	foldersini=os.path.join(os.path.dirname(os.path.realpath(__file__)),'folders.ini')
 	ModelFolders=GetModelDir.GetModelDir(dict_Param['ModelName'],
-		c_ConfigFile='./folders.ini', VerboseFlag=False)
+		c_ConfigFile=foldersini, VerboseFlag=False)
 
 	#get the supported variables list
 	dict_SupportStruct=WriteIDLIncludeFile.GetIDLIncludeFileText('nogroup','whatever', all=True)
@@ -251,6 +252,8 @@ if __name__ == '__main__':
 	if dict_Param['DEBUG'] is True:
 		sys.stderr.write('Parameters for subprocess.run:\n')
 	#now run the commands
+	if len(CmdArr) == 0:
+		sys.stderr.write('INFO: No model directory has been found!\n')
 	for cmd in CmdArr:
 		if dict_Param['DEBUG'] is False:
 			while True:
