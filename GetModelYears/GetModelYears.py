@@ -61,7 +61,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Return the data years in an aerocom model directory\n\n')
 	parser.add_argument("dir", help="directory to check")
 	parser.add_argument("--var", help="return the years for a given variable")
-	parser.add_argument("--commasep", help="set to 1 to get a comma serated list")
+	parser.add_argument("--commasep", help="set to 1 to get a comma separated list")
 	args = parser.parse_args()
 	Var=None
 	if args.var:
