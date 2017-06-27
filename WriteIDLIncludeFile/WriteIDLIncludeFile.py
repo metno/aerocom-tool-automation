@@ -82,7 +82,10 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['SEND']="""
 		i_SendFlag=1
 	"""
-	dict_IncludeFileData['FLAGS']['Export']="""
+	dict_IncludeFileData['FLAGS']['EXPORT']="""
+		i_PlotZonalMeansFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+		s_PlotTableFlag=['SITELOCATION']
 		i_WriteStationValues=3
 	"""
 	dict_IncludeFileData['FLAGS']['HTAPFILTERS']= """
@@ -101,7 +104,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		c_MicStationFilters=['AODTREND95']
 	"""
 	dict_IncludeFileData['FLAGS']['AODTRENDS']="""
-		c_MicStationFilters=['AODTREND','AODTREND95']
+		c_MicStationFilters=['AODTREND95TO12','AODTREND','AODTREND95']
 	"""
 	############ Variables #######################
 	dict_IncludeFileData['VARS']={}
@@ -426,6 +429,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['OBSNETWORKS']['AeronetSunSDADaily']= """
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunSDADaily]
 	"""
+	dict_IncludeFileData['OBSNETWORKS']['AeronetSunV3L15Daily']= """
+		i_ObsNetworktype=[iC_ObsNet_AeronetSunV3L15Daily]
+	"""
 
 
 
@@ -497,10 +503,13 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 	if 'HTAPFILTERS' in dict_Param.keys():
 		RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
 			
-	#include HTAP filters
+	#include AODTRENDS filters
 	if 'AODTRENDS' in dict_Param.keys():
 		RetValArr.append(GetIDLIncludeFileText('FLAGS','AODTRENDS'))
 			
+	#include AODTRENDS filters
+	if 'EXPORTOBSDATA' in dict_Param.keys():
+		RetValArr.append(GetIDLIncludeFileText('FLAGS','EXPORT'))
 	
 	#RetValArr.append(GetIDLIncludeFileText(''))
 	#RetValArr.append(GetIDLIncludeFileText(''))
@@ -558,7 +567,7 @@ if __name__ == '__main__':
 
 	#Get the constant dictionary to fill the help file accordingly
 	dict_SupportStruct=GetIDLIncludeFileText('nogroup','whatever', all=True)
-	SupportedObsNetworks=', '.join(dict_SupportStruct['OBSNETWORKS'].keys())
+	SupportedObsNetworks=', '.join(sorted(dict_SupportStruct['OBSNETWORKS'].keys()))
 
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='Write IDL include file and model list file for the aerocom-tools \n\nexample:\nWriteIDLIncludeFile.py od550gt1aer IASI_DLR.v5.2.All,IASI_DLR.v5.2.AN,IASI_DLR.v5.2.DN ../../aerocom-tools/batching/CCI_IASI_od550gt1aer.pro ../../aerocom-tools/batching/CCI_IASI_DLR.v5.2.txt 2007,2008,2009,2010,2011,2012,2013,2014,2015\n\n')
@@ -574,6 +583,7 @@ if __name__ == '__main__':
 	parser.add_argument("-l","--listvars", help="list the supported variables", action='store_true')
 	parser.add_argument("--htapfilters", help="also include the HTAP pixel based filters",action='store_true')
 	parser.add_argument("--aodtrends", help="run only the filters AODTREND and AODTREND95",action='store_true')
+	parser.add_argument("--exportobsdata", help="export the obs data to text files",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -618,6 +628,9 @@ if __name__ == '__main__':
 
 	if args.aodtrends:
 		dict_Param['AODTRENDS']=args.aodtrends
+
+	if args.exportobsdata:
+		dict_Param['EXPORTOBSDATA']=args.exportobsdata
 
 	#if '' not in dict_Param.keys():
 	#pdb.set_trace()
