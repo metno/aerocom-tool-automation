@@ -62,7 +62,10 @@ def ATAStats(RunLogDir, MoveSuccessLogs=False, DeleteSuccessLogs=False, DoNothin
 					c_DummyArr=line.split("'")
 					break
 
-			OutData[LogName]['Model']=c_DummyArr[i_ModelPos]
+			try:
+				OutData[LogName]['Model']=c_DummyArr[i_ModelPos]
+			except UnboundLocalError:
+				continue
 			OutData[LogName]['ModelYear']=c_DummyArr[i_ModelYearPos]
 			OutData[LogName]['ObsYear']=c_DummyArr[i_DataYearPos]
 			if '0000' in OutData[LogName]['ObsYear']: OutData[LogName]['ObsYear'] = OutData[LogName]['ModelYear']
@@ -213,7 +216,7 @@ if __name__ == '__main__':
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='ATAStats: Program to analyse run logs of the aerocom-tool-automation software\n\n',)
 	#epilog='RI#eturns some general statistics')
-	parser.add_argument("-d","--directory", help="use directory. Defaults to /lustre/storeB/project/aerocom/logs/runlog", default='/lustre/storeB/project/aerocom/logs/runlog')
+	parser.add_argument("-d","--directory", help="use directory. Defaults to /lustre/storeA/project/aerocom/logs/runlog", default='/lustre/storeA/project/aerocom/logs/runlog')
 	parser.add_argument("-m","--movelogs", help="move successfully run log files to <success directory>", action='store_true')
 	parser.add_argument("--deletelogs", help="delete successfully run log files", action='store_true')
 	parser.add_argument("-f","--failedonly", help="list only failed jobs", action='store_true')
@@ -258,7 +261,7 @@ if __name__ == '__main__':
 	if args.directory:
 		dict_Param['dir']=args.directory
 	else:
-		dict_Param['dir']='/lustre/storeB/project/aerocom/logs/runlog'
+		dict_Param['dir']='/lustre/storeA/project/aerocom/logs/runlog'
 
 	if os.path.isdir(dict_Param['dir']) is False:
 		sys.stderr.write('Error: The supplied directory does not exist. Exiting.\n')
