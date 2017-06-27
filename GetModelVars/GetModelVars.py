@@ -24,6 +24,7 @@ def GetModelVars(ModelFolder, VerboseFlag=False, DebugFlag=False):
 	#aerocom3_CAM5.3-Oslo_AP3-CTRL2016-PD_od550aer_Column_2010_monthly.nc
 	#aerocom.AATSR_ensemble.v2.6.daily.od550aer.2012.nc
 	Vars=[]
+	DataTypesToList=['surface','column','modellevel']
 	if os.path.isdir(ModelFolder):
 		files=glob.glob(ModelFolder+'/*.nc')
 		for file in files:
@@ -32,11 +33,11 @@ def GetModelVars(ModelFolder, VerboseFlag=False, DebugFlag=False):
 				#newest file naming convention
 				c_DummyArr=file.split('_')
 				# include vars for the surface
-				if c_DummyArr[-3].lower() == 'surface':
+				if c_DummyArr[-3].lower() in DataTypesToList:
 					Vars.append(c_DummyArr[-4])
 				#also include 3d vars that provide station based data
 				#and contain the string vmr
-				#in this case the variable name has to slightly changed to the aerockm phase 2 naming
+				#in this case the variable name has to slightly changed to the aerocom phase 2 naming
 				elif c_DummyArr[-3].lower() == 'modellevelatstations':
 					if 'vmr' in c_DummyArr[-4]:
 						Vars.append(c_DummyArr[-4].replace('vmr','vmr3d'))
