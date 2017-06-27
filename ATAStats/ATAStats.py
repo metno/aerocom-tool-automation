@@ -48,6 +48,7 @@ def ATAStats(RunLogDir, MoveSuccessLogs=False, DeleteSuccessLogs=False, DoNothin
 				continue
 			LogName=os.path.basename(logfile)
 			OutData[LogName]={}
+			OutData[LogName]['File']=logfile
 			if VerboseFlag is True:
 				sys.stderr.write('reading: '+logfile+'\n')
 			with open(logfile, 'rt') as InFile:
@@ -170,10 +171,11 @@ def PrintAtaStats(InData,ModelInData,FailedOnlyFlag=False):
 			PrintKey='.'.join([Model,InData[key]['Var']])
 			if InData[key]['Success'] is True:
 				PrintDataSuccess[PrintKey]=(' | '.join([InData[key]['Model'].ljust(MaxModelStrLength),InData[key]['Var'].ljust(MaxVarLength), 
-					InData[key]['ModelYear'].ljust(MaxYearLength), InData[key]['ObsYear'].ljust(MaxYearLength+3),key]))
+					#InData[key]['ModelYear'].ljust(MaxYearLength), InData[key]['ObsYear'].ljust(MaxYearLength+3),key]))
+					InData[key]['ModelYear'].ljust(MaxYearLength), InData[key]['ObsYear'].ljust(MaxYearLength+3),InData[key]['File']]))
 			else:
 				PrintDataFail[PrintKey]=(' | '.join([InData[key]['Model'].ljust(MaxModelStrLength),InData[key]['Var'].ljust(MaxVarLength), 
-					InData[key]['ModelYear'].ljust(MaxYearLength), InData[key]['ObsYear'].ljust(MaxYearLength+3),key]))
+					InData[key]['ModelYear'].ljust(MaxYearLength), InData[key]['ObsYear'].ljust(MaxYearLength+3),InData[key]['File']]))
 				#work on the reasons for failure
 				try:
 					MeanVal=float(InData[key]['MeanValOrig'][0])
