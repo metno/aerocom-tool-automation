@@ -288,6 +288,12 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['sconctno3']="""
 		c_ModelVars=['SCONC_TNO3']
 	"""
+	dict_IncludeFileData['VARS']['sconcss']="""
+		c_ModelVars=['SCONC_SS']
+	"""
+	dict_IncludeFileData['VARS']['sconcoa']="""
+		c_ModelVars=['SCONC_OA']
+	"""
 	dict_IncludeFileData['VARS']['vmro3']="""
 		c_ModelVars=['VMR_O3']
 	"""
