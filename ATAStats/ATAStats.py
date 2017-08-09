@@ -37,9 +37,9 @@ def ATAStats(RunLogDir, MoveSuccessLogs=False, DeleteSuccessLogs=False, DoNothin
 		except FileExistsError:
 			pass
 		if AllUserFlag is False:
-			logfiles=glob.glob(os.path.join(RunLogDir,'*'+getpass.getuser()+'*.log'))
+			logfiles=glob.glob(os.path.join(RunLogDir,'*'+getpass.getuser()+'_aerocom-tools*.log'))
 		else:
-			logfiles=glob.glob(os.path.join(RunLogDir,'*.log'))
+			logfiles=glob.glob(os.path.join(RunLogDir,'*_aerocom-tools*.log'))
 		for logfile in logfiles:
 			#Leave out size 0 files
 			if os.path.getsize(logfile) == 0:
@@ -168,7 +168,8 @@ def PrintAtaStats(InData,ModelInData,FailedOnlyFlag=False):
 	for Model in sorted(ModelInData):
 		#pdb.set_trace()
 		for key in ModelInData[Model]:
-			PrintKey='.'.join([Model,InData[key]['Var']])
+			PrintKey='.'.join([Model,InData[key]['Var'],InData[key]['ModelYear'],InData[key]['ObsYear']])
+			#PrintKey could be existing!
 			if InData[key]['Success'] is True:
 				PrintDataSuccess[PrintKey]=(' | '.join([InData[key]['Model'].ljust(MaxModelStrLength),InData[key]['Var'].ljust(MaxVarLength), 
 					#InData[key]['ModelYear'].ljust(MaxYearLength), InData[key]['ObsYear'].ljust(MaxYearLength+3),key]))
