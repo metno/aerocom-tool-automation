@@ -19,7 +19,7 @@ import sys
 import os
 import argparse 
 
-def GetObsNetworkSupportedVars(tooldir, ObsNetwork, VerboseFlag=False, DebugFlag=False):
+def GetObsNetworkSupportedVars(tooldir, ObsNetworkIn, VerboseFlag=False, DebugFlag=False):
 	"""
 	find the aerocom variables an observation network supports
 	by analysing the IDL source file 
@@ -27,6 +27,12 @@ def GetObsNetworkSupportedVars(tooldir, ObsNetwork, VerboseFlag=False, DebugFlag
 
 	This info is needed to rund an entire obs network from the 
 	aerocom-tool-automation software.
+
+	Parameters:
+		tooldir:			full path to the aerocom-tools directory
+		ObsNetworkIn:	String identifying the obs network
+							Can be the ones used by the aerocom-tools or those used 
+							by aerocom-automation-software
 
 	"""
 	###################################################
@@ -60,6 +66,19 @@ def GetObsNetworkSupportedVars(tooldir, ObsNetwork, VerboseFlag=False, DebugFlag
 	ObsnetworkSupported.append('iC_ObsNet_AeronetForcing')
 	ObsnetworkSupported.append('iC_ObsNet_EBASNRT')
 	ObsnetworkSupported.append('iC_ObsNet_WOUDCOzoneSonds')
+
+	dict_ToolsObsnetworkName={}
+	dict_ToolsObsnetworkName['AERONETSun2.0']='iC_ObsNet_AeronetSunRaw20'
+	dict_ToolsObsnetworkName['AERONETSunNRT']='iC_ObsNet_AeronetSunNRT'
+	dict_ToolsObsnetworkName['AeronetSunSDADaily']='iC_ObsNet_AeronetSunSDADaily'
+	dict_ToolsObsnetworkName['AeronetSunV3L15Daily']='iC_ObsNet_AeronetSunV3L15Daily'
+	dict_ToolsObsnetworkName['EAAQeRep']='iC_ObsNet_AirbaseEEA'
+	dict_ToolsObsnetworkName['EBASMC']='iC_ObsNet_EBASMultiColumn'
+
+	if ObsNetworkIn in dict_ToolsObsnetworkName:
+		ObsNetwork=dict_ToolsObsnetworkName[ObsNetworkIn]
+	else:
+		ObsNetwork=ObsNetworkIn
 	
 	if ObsNetwork in ObsnetworkSupported:
 		FQFileToCheck=os.path.join(tooldir,FileToCheck)
@@ -86,7 +105,7 @@ def GetObsNetworkSupportedVars(tooldir, ObsNetwork, VerboseFlag=False, DebugFlag
 				for line2 in lines:
 					if ObsTestStr in line2 and (';'+ObsTestStr) not in line2:
 						#print(line2)
-						VarsSupported.append(aerocomvar1)
+						VarsSupported.append(aerocomvar1.lower().replace('_',''))
 						#pdb.set_trace()
 
 		return VarsSupported

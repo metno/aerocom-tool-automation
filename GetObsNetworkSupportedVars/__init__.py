@@ -1,1 +1,1 @@
-GetObsNetworkSupportedVars.py
+from .GetObsNetworkSupportedVars import *
