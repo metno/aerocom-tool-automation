@@ -37,7 +37,7 @@ import subprocess
 
 def GetModelDir(ModelArr, VerboseFlag=False, DebugFlag=False, c_ConfigFile=None ):
 	if c_ConfigFile == None:
-		c_ConfigFile='folders.ini'
+		c_ConfigFile='constants.ini'
 	dict_Config={}
 	ModelDirs={}
 	if os.path.isfile(c_ConfigFile):
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 		else:
 			#try script directory
 			IniPath=os.path.join(os.path.dirname(sys.argv[0]),args.config)
-			pdb.set_trace()
+			#pdb.set_trace()
 			if not os.path.isfile(IniPath):
 				sys.stderr.write('Error: The supplied config file does not exist. Exiting.\n')
 				sys.exit(1)
@@ -122,7 +122,7 @@ if __name__ == '__main__':
 			#pdb.set_trace()
 			#model could be on the fs on more than one directory
 			if len(ModelDirs[Model]) > 1:
-				sys.stderr.write('WARNING: Model found on more than obe directory!\n')
+				sys.stderr.write('WARNING: Model found on more than one directory!\n')
 			for dir in ModelDirs[Model]:
 				for file in sorted(os.listdir(os.path.join(dir,'renamed'))):
 					sys.stdout.write(file+'\n')
