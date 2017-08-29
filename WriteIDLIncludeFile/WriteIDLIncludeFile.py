@@ -111,6 +111,150 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	#dict_IncludeFileData['VARS']['']="""
 		#c_ModelVars=['']
 	#"""
+	dict_IncludeFileData['VARS']['alertaer']="""
+		c_ModelVars=['ALERT_AER']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['alertdust']="""
+		c_ModelVars=['ALERT_AER']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['od550aer_Forecast']="""
+		c_ModelVars=['OD550_AER']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['od550bc_Forecast']="""
+		c_ModelVars=['OD550_BC']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['od550dust_Forecast']="""
+		c_ModelVars=['OD550_DUST']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['od550oa_Forecast']="""
+		c_ModelVars=['OD550_OA']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['od550so4_Forecast']="""
+		c_ModelVars=['OD550_SO4']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
+	dict_IncludeFileData['VARS']['od550ss_Forecast']="""
+		c_ModelVars=['OD550_SS']
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
+
 	dict_IncludeFileData['VARS']['scatc550dryaer']="""
 		c_ModelVars=['SCATC550DRY_AER']
 		i_ObsNetworktype=[iC_ObsNet_EBASMultiColumn]
