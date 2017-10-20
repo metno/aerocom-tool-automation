@@ -52,6 +52,7 @@ if __name__ == '__main__':
 	IniFileData.read(ConfigIni)
 	ObsOnlyModelName=IniFileData['parameters']['ObsOnlyModelname']
 
+	#pdb.set_trace()
 	#command line interface using argparse
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='aerocom-automation-tools\nProgram to automate aerocom-tool plotting based on just the model name\n\n')
@@ -79,6 +80,15 @@ if __name__ == '__main__':
 
 	if args.variable:
 		dict_Param['VariablesToRun']=args.variable.split(',')
+		#now build a dict with var as key, and the 'real var name as value
+		#used to make special variable model possible
+		#e.g. od550aer_Forecast
+		dict_Vars={}
+		for Var in dict_Param['VariablesToRun']:
+			if Var in IniFileData['VariableAliases']:
+				dict_Vars[Var]=IniFileData['VariableAliases'][Var]
+			else:
+				dict_Vars[Var]=Var
 
 	if args.model:
 		dict_Param['ModelName']=args.model.split(',')
@@ -251,20 +261,20 @@ if __name__ == '__main__':
 		SupportedVars=','.join(sorted(dict_SupportStruct['VARS'].keys()))
 		#loop through the model dirs
 		Models=list(ModelFolders.keys())
+		#pdb.set_trace()
 		for Model in ModelFolders.keys():
 			#just the 1st model dir for now
 			Modeldir=os.path.join(ModelFolders[Model][0],'renamed')
-			Vars=GetModelVars.GetModelVars(Modeldir)
-			if dict_Param['VERBOSE'] == True:
+			VarsInModel=GetModelVars.GetModelVars(Modeldir)
+			if args.variable:
+				VarsToRun=dict_Vars.values()
+			else:
+				VarsToRun=VarsInModel
+				
+			if dict_Param['VERBOSE'] is True:
 				sys.stderr.write('Modeldir: '+Modeldir+'\n')
 			#loop through the Variables an determine the years they are present
-			for Var in Vars:
-				if args.variable:
-					if Var not in dict_Param['VariablesToRun']:
-						if dict_Param['VERBOSE'] is True:
-							sys.stderr.write('Var '+Var+' not in provided list od vars to run. Skipping that variable.\n')
-						continue
-
+			for Var in VarsToRun:
 				try:
 					Dummy=dict_SupportStruct['VARS'][Var]
 				except KeyError:
@@ -339,7 +349,7 @@ if __name__ == '__main__':
 		sys.stderr.write('Parameters for subprocess.run:\n')
 	#now run the commands
 	if len(CmdArr) == 0:
-		sys.stderr.write('INFO: No model directory has been found!\n')
+		sys.stderr.write('INFO: No commands to run! Wrong variable name?\n')
 	for cmd in CmdArr:
 		if dict_Param['DEBUG'] is False:
 			while True:
