@@ -71,6 +71,9 @@ if __name__ == '__main__':
 
 	parser.add_argument("--outputdir", help="directory where the idl include files will be put. Default is <tooldir>/batching. Directory needs to exist.")
 	parser.add_argument("--obsnetwork", help="run all variables for a certain obs network; Supported are "+SupportedObsNetworks)
+	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
+	parser.add_argument("--htapfilters", help="also run the htap filters; model has to have 1x1 degree resolution at the moment",action='store_true')
+	parser.add_argument("--aodtrends", help="run the AODTREND filters AODTREND95TO12,AODTREND,AODTREND95",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -93,6 +96,11 @@ if __name__ == '__main__':
 	if args.model:
 		dict_Param['ModelName']=args.model.split(',')
 
+	if args.htapfilters:
+		dict_Param['HTAPFILTERS']=args.htapfilters
+
+	if args.aodtrends:
+		dict_Param['AODTRENDS']=args.aodtrends
 
 	if args.idl:
 		dict_Param['IDL']=args.idl
@@ -159,6 +167,9 @@ if __name__ == '__main__':
 		dict_Param['ObsnetworksToRun']=args.obsnetwork.split(',')[0]
 		#use the 1st for model plotting for now
 		dict_Param['ObsNetworkName']=args.obsnetwork.split(',')[0]
+
+	if args.forecast:
+		dict_Param['FORECAST']=args.forecast
 
 	hostname=socket.gethostname()
 	CmdArr=[]
@@ -262,7 +273,7 @@ if __name__ == '__main__':
 		#loop through the model dirs
 		Models=list(ModelFolders.keys())
 		#pdb.set_trace()
-		for Model in ModelFolders.keys():
+		for Model in ModelFolders:
 			#just the 1st model dir for now
 			Modeldir=os.path.join(ModelFolders[Model][0],'renamed')
 			VarsInModel=GetModelVars.GetModelVars(Modeldir)
@@ -284,6 +295,7 @@ if __name__ == '__main__':
 					continue
 
 					
+				#pdb.set_trace()
 				#now write the idl include file
 				#one per variable
 				dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],Model+'_'+Var+'_include.pro')
@@ -296,6 +308,11 @@ if __name__ == '__main__':
 				except SystemExit:
 					pass
 
+				#For the include file we have some 'pseudo variables' for special purposes like the
+				#dust forecast.
+				#The real variable name is actually everything before the underscore
+
+				Var=Var.split('_')[0]
 				Years=GetModelYears.GetModelYears(Modeldir, Variable=Var)
 				#c_Years=','.join(Years)
 				#try:
