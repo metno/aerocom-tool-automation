@@ -76,6 +76,22 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['SUBVARS']= """
 		i_ReadSubVarsFlag=1
 	"""
+	dict_IncludeFileData['FLAGS']['FORECAST']="""
+		i_ReadSubVarsFlag=0
+		c_ObsNetworkDataType=['D']
+		i_PlotMonthlyFlag=1
+		i_VerboseFlag=1
+		i_areaweightflag=1 
+		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
+		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_TimeSlots=[c_ModelMonths]
+		i_MakePNG=1
+		i_SendFlag=1
+		i_ObsNetworktype=[iC_ObsNet_NONE]
+		i_PlotDailyMapFlag=1
+		i_PlotMapFlag=0
+		i_PlotModelAERONETTimeSeriesFlag=0
+"""
 	dict_IncludeFileData['FLAGS']['NOSEND']="""
 		i_SendFlag=0
 	"""
@@ -104,7 +120,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		c_MicStationFilters=['AODTREND95']
 	"""
 	dict_IncludeFileData['FLAGS']['AODTRENDS']="""
-		c_MicStationFilters=['AODTREND95TO12','AODTREND','AODTREND95']
+		;c_MicStationFilters=['AODTREND95TO12','AODTREND','AODTREND95']
+		c_MicStationFilters=['AODTREND95TO12']
+		i_PlotModelAERONETTimeSeriesFlag=0
 	"""
 	############ Variables #######################
 	dict_IncludeFileData['VARS']={}
@@ -113,148 +131,10 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	#"""
 	dict_IncludeFileData['VARS']['alertaer']="""
 		c_ModelVars=['ALERT_AER']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
 	"""
-
 	dict_IncludeFileData['VARS']['alertdust']="""
 		c_ModelVars=['ALERT_AER']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
 	"""
-
-	dict_IncludeFileData['VARS']['od550aer_Forecast']="""
-		c_ModelVars=['OD550_AER']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
-	"""
-
-	dict_IncludeFileData['VARS']['od550bc_Forecast']="""
-		c_ModelVars=['OD550_BC']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
-	"""
-
-	dict_IncludeFileData['VARS']['od550dust_Forecast']="""
-		c_ModelVars=['OD550_DUST']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
-	"""
-
-	dict_IncludeFileData['VARS']['od550oa_Forecast']="""
-		c_ModelVars=['OD550_OA']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
-	"""
-
-	dict_IncludeFileData['VARS']['od550so4_Forecast']="""
-		c_ModelVars=['OD550_SO4']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
-	"""
-
-	dict_IncludeFileData['VARS']['od550ss_Forecast']="""
-		c_ModelVars=['OD550_SS']
-		i_ReadSubVarsFlag=0
-		c_ObsNetworkDataType=['D']
-		i_PlotMonthlyFlag=1
-		i_VerboseFlag=1
-		i_areaweightflag=1 
-		c_modelmonths=['01','02','03','04','05','06','07','08','09','10','11','12']
-		c_MicStationFilters=['WORLD','NAFRICA','NAMERICA','SAMERICA','SAFRICA','EUROPE','ASIA','AUSTRALIA','INDIA','CHINA','WORLD-wMOUNTAINS']
-		c_TimeSlots=[c_ModelMonths]
-		i_MakePNG=1
-		i_SendFlag=1
-		i_ObsNetworktype=[iC_ObsNet_NONE]
-		i_PlotDailyMapFlag=1
-		i_PlotMapFlag=0
-		i_PlotModelAERONETTimeSeriesFlag=0
-	"""
-
 	dict_IncludeFileData['VARS']['scatc550dryaer']="""
 		c_ModelVars=['SCATC550DRY_AER']
 		i_ObsNetworktype=[iC_ObsNet_EBASMultiColumn]
@@ -444,8 +324,17 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['vmro3']="""
 		c_ModelVars=['VMR_O3']
 	"""
+	dict_IncludeFileData['VARS']['vmro3max']="""
+		c_ModelVars=['VMR_O3MAX']
+	"""
 	dict_IncludeFileData['VARS']['vmrco']="""
 		c_ModelVars=['VMR_CO']
+	"""
+	dict_IncludeFileData['VARS']['vmrurbo3']="""
+		c_ModelVars=['VMRURB_O3']
+	"""
+	dict_IncludeFileData['VARS']['vmrurbo3max']="""
+		c_ModelVars=['VMRURB_O3MAX']
 	"""
 	dict_IncludeFileData['VARS']['vmr3do3']="""
 		c_ModelVars=['VMR3D_O3']
@@ -458,6 +347,12 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		i_PlotModelAERONETTimeSeriesFlag=0
 		I_PLOTPROFILESFLAG=4
 		i_ReadStationBasedModelData=1
+	"""
+	dict_IncludeFileData['VARS']['abs550aer']="""
+		c_ModelVars=['ABS550_AER']
+	"""
+	dict_IncludeFileData['VARS']['abs550csaer']="""
+		c_ModelVars=['ABS550CS_AER']
 	"""
 	#dict_IncludeFileData['VARS']['']="""
 		#c_ModelVars=['']
@@ -585,9 +480,6 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['OBSNETWORKS']['AeronetSunV3L15Daily']= """
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunV3L15Daily]
 	"""
-
-
-
 	#what we return might depend on the variables and some features at some point
 	#but keep it simple for now, but save space with the common block
 
@@ -649,27 +541,40 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 		pass
 	
 	#no send flag
-	if 'NOSEND' in dict_Param.keys():
+	try:
 		if dict_Param['NOSEND'] is True:
 			RetValArr.append(GetIDLIncludeFileText('FLAGS','NOSEND'))
-	#include HTAP filters
-	if 'HTAPFILTERS' in dict_Param.keys():
-		RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
-			
-	#include AODTRENDS filters
-	if 'AODTRENDS' in dict_Param.keys():
-		RetValArr.append(GetIDLIncludeFileText('FLAGS','AODTRENDS'))
-			
-	#include AODTRENDS filters
-	if 'EXPORTOBSDATA' in dict_Param.keys():
-		RetValArr.append(GetIDLIncludeFileText('FLAGS','EXPORT'))
+	except KeyError:
+		pass
 	
-	#RetValArr.append(GetIDLIncludeFileText(''))
-	#RetValArr.append(GetIDLIncludeFileText(''))
-	#RetValArr.append(GetIDLIncludeFileText(''))
-	#RetValArr.append(GetIDLIncludeFileText(''))
-	#RetValArr.append(GetIDLIncludeFileText(''))
-	#RetValArr.append(GetIDLIncludeFileText(''))
+	#include HTAP filters
+	try:
+		if dict_Param['HTAPFILTERS'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
+	except KeyError:
+		pass
+			
+	#include AODTRENDS filters
+	try:
+		if  dict_Param['AODTRENDS'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','AODTRENDS'))
+	except KeyError:
+		pass
+			
+	#include data export
+	try:
+		if  dict_Param['EXPORTOBSDATA'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','EXPORT'))
+	except KeyError:
+		pass
+	
+	#forecast mode (daily map plots)
+	try:
+		if dict_Param['FORECAST'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','FORECAST'))
+	except KeyError:
+		pass
+	
 	#We might want to add some error messages in case the OutFile is not writable
 	RetValArr.append('')
 	RetVal='\n'.join(RetValArr)
@@ -735,6 +640,7 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--nosend", help="switch off webserver upload", action='store_true')
 	parser.add_argument("-l","--listvars", help="list the supported variables", action='store_true')
 	parser.add_argument("--htapfilters", help="also include the HTAP pixel based filters",action='store_true')
+	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
 	parser.add_argument("--aodtrends", help="run only the filters AODTREND and AODTREND95",action='store_true')
 	parser.add_argument("--exportobsdata", help="export the obs data to text files",action='store_true')
 	#parser.add_argument("--", help="")
@@ -778,6 +684,9 @@ if __name__ == '__main__':
 
 	if args.htapfilters:
 		dict_Param['HTAPFILTERS']=args.htapfilters
+
+	if args.forecast:
+		dict_Param['FORECAST']=args.forecast
 
 	if args.aodtrends:
 		dict_Param['AODTRENDS']=args.aodtrends
