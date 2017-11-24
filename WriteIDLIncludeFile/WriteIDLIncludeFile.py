@@ -183,6 +183,19 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		c_ModelVars=['ANG4487CS_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunRaw20]
 	"""
+	dict_IncludeFileData['VARS']['od550bc']="""
+		c_ModelVars=['OD550_BC']
+	"""
+	dict_IncludeFileData['VARS']['od550no3']="""
+		c_ModelVars=['OD550_NO3']
+	"""
+	dict_IncludeFileData['VARS']['od550oa']="""
+		c_ModelVars=['OD550_OA']
+	"""
+	dict_IncludeFileData['VARS']['od550so4']="""
+		c_ModelVars=['OD550_SO4']
+	"""
+
 	dict_IncludeFileData['VARS']['wetdust']="""
 		c_ModelVars=['WET_DUST']
 	"""
@@ -205,6 +218,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['emiso4']="""
 		c_ModelVars=['EMI_SO4']
 	"""
+	dict_IncludeFileData['VARS']['emiso2']="""
+		c_ModelVars=['EMI_SO2']
+	"""
 	dict_IncludeFileData['VARS']['emibc']="""
 		c_ModelVars=['EMI_BC']
 	"""
@@ -213,6 +229,18 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['VARS']['emiss']="""
 		c_ModelVars=['EMI_SS']
+	"""
+	dict_IncludeFileData['VARS']['emino3']="""
+		c_ModelVars=['EMI_NO3']
+	"""
+	dict_IncludeFileData['VARS']['emioa']="""
+		c_ModelVars=['EMI_OA']
+	"""
+	dict_IncludeFileData['VARS']['eminox']="""
+		c_ModelVars=['EMI_NOX']
+	"""
+	dict_IncludeFileData['VARS']['emidms']="""
+		c_ModelVars=['EMI_DMS']
 	"""
 
 	dict_IncludeFileData['VARS']['drydust']="""
@@ -232,6 +260,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['VARS']['depdust']="""
 		c_ModelVars=['DEP_DUST']
+		i_ObsNetworktype=[iC_ObsNet_None]
 	"""
 	dict_IncludeFileData['VARS']['depso4']="""
 		c_ModelVars=['DEP_SO4']
@@ -244,6 +273,12 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['VARS']['depss']="""
 		c_ModelVars=['DEP_SS']
+	"""
+	dict_IncludeFileData['VARS']['depno3']="""
+		c_ModelVars=['DEP_NO3']
+	"""
+	dict_IncludeFileData['VARS']['depoa']="""
+		c_ModelVars=['DEP_OA']
 	"""
 ###
 	dict_IncludeFileData['VARS']['seddust']="""
@@ -276,6 +311,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['VARS']['loadss']="""
 		c_ModelVars=['LOAD_SS']
+	"""
+	dict_IncludeFileData['VARS']['loadno3']="""
+		c_ModelVars=['LOAD_NO3']
 	"""
 ###
 ###
@@ -350,6 +388,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['VARS']['abs550aer']="""
 		c_ModelVars=['ABS550_AER']
+	"""
+	dict_IncludeFileData['VARS']['abs550aercs']="""
+		c_ModelVars=['ABS550CS_AER']
 	"""
 	dict_IncludeFileData['VARS']['abs550csaer']="""
 		c_ModelVars=['ABS550CS_AER']
