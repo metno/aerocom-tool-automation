@@ -395,6 +395,21 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['abs550csaer']="""
 		c_ModelVars=['ABS550CS_AER']
 	"""
+	dict_IncludeFileData['VARS']['ssa440aer']="""
+		c_ModelVars=['SSA440_AER']
+	"""
+	dict_IncludeFileData['VARS']['ssa550aer']="""
+		c_ModelVars=['SSA550_AER']
+	"""
+	dict_IncludeFileData['VARS']['ssa670aer']="""
+		c_ModelVars=['SSA670_AER']
+	"""
+	dict_IncludeFileData['VARS']['ssa865aer']="""
+		c_ModelVars=['SSA865_AER']
+	"""
+	dict_IncludeFileData['VARS']['ssa1020aer']="""
+		c_ModelVars=['SSA1020_AER']
+	"""
 	#dict_IncludeFileData['VARS']['']="""
 		#c_ModelVars=['']
 	#"""
