@@ -32,7 +32,6 @@ import ModAerocomMain
 import datetime
 import socket
 import helpers.Taskinfo as Taskinfo
-import helpers.ReadIniFile as ReadIniFile
 import GetObsNetworkSupportedVars
 
 
