@@ -52,7 +52,24 @@ if __name__ == '__main__':
 	IniFileData.read(ConfigIni)
 	ObsOnlyModelName=IniFileData['parameters']['ObsOnlyModelname']
 
-	#pdb.set_trace()
+	#set default location of the aerocom-idl directory
+	#1st we look at the environment variable AEROCOMWORKDIR,
+	try:
+		ToolDir = os.environ['AEROCOMWORKDIR']
+	except KeyError:
+		ToolDir = None
+
+	#then we check for ${HOME}/aerocom-idl
+	if ToolDir is None:
+		ToolDir = os.path.join(os.environ['HOME'],'aerocom-tools')
+		
+	#check if ToolDir exist. If not, delete variable
+	if not os.path.isdir(ToolDir):
+		ToolDir = None
+		
+	User = None
+	User = os.environ['USER']
+
 	#command line interface using argparse
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='aerocom-automation-tools\nProgram to automate aerocom-tool plotting based on just the model name\n\n')
@@ -60,7 +77,10 @@ if __name__ == '__main__':
 	parser.add_argument("--variable", help="Run only a list of variables. List has to be comma seperated.")
 	parser.add_argument("--modelyear", help="model years to run; use 9999 for climatology, leave out for all years; comma separated list")
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
-	parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset ${HOME}/aerocom-tools/ will be used")
+	if ToolDir is None:
+		parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; WARNING no tool dir found. Please provide one!")
+	else:
+		parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; if unset "+ToolDir+" will be used")
 	parser.add_argument("--nosend", help="switch off webserver upload",action='store_true')
 	parser.add_argument("-p","--print", help="switch on idl include file name printing to stdout. Might be useful for external programs",action='store_true')
 	parser.add_argument("-v","--verbose", help="switch on verbosity",action='store_true')
@@ -134,10 +154,20 @@ if __name__ == '__main__':
 	if args.tooldir:
 		dict_Param['ToolDir']=args.tooldir
 	else:
-		dict_Param['ToolDir']=os.path.join(os.environ['HOME'],'aerocom-tools')
-	if os.path.isdir(dict_Param['ToolDir']) is False:
-		sys.stderr.write('Error: supplied tool dir does not exist.\n')
+		if ToolDir is None:
+			sys.stderr.write('Error: aerocom-tool directory not found in any of the default locations!\n')
+			sys.stderr.write('($AEROCOMWORKDIR or ${HOME}/aerocom-tools). Please supply the location of \n')
+			sys.stderr.write('the aerocom-tools using the --tooldir switch. \n')
+			sys.exit(2)
+		else:
+			dict_Param['ToolDir']=ToolDir
+	
+	if not os.path.isdir(dict_Param['ToolDir']):
+		sys.stderr.write('Error: supplied tool dir '+dict_Param['ToolDir']+' does not exist. Exiting\n')
 		sys.exit(1)
+
+	if args.verbose:
+		sys.stderr.write('using tooldir '+dict_Param['ToolDir']+'\n')
 	
 	if args.script:
 		dict_Param['SCRIPT']=args.script
@@ -161,7 +191,13 @@ if __name__ == '__main__':
 			sys.stderr.write('Error: supplied output dir for idl include files does not exist.\n')
 			sys.exit(2)
 	else:
-		dict_Param['OutputDir']=os.path.join(dict_Param['ToolDir'],'batching')
+		dict_Param['OutputDir']=os.path.join(dict_Param['ToolDir'],'batching',User)
+
+	#create user specific batching directory
+	try:
+		os.mkdir(dict_Param['OutputDir'])
+	except FileExistsError:
+		pass
 
 	if args.obsnetwork:
 		dict_Param['ObsnetworksToRun']=args.obsnetwork.split(',')[0]
@@ -210,7 +246,7 @@ if __name__ == '__main__':
 					dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],ObsNetWork+'_'+Var+'_include.pro')
 					dict_Param['VarName']=Var
 					#Maybe we want to check if the variable is actually supported
-					ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', ObsNetWork+'_'+Var+'.txt')
+					ModellistFile=os.path.join(dict_Param['OutputDir'], ObsNetWork+'_'+Var+'.txt')
 					#write IDL include file
 					try:
 						WriteIDLIncludeFile.WriteIDLIncludeFile(dict_Param)
@@ -301,7 +337,8 @@ if __name__ == '__main__':
 				dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],Model+'_'+Var+'_include.pro')
 				dict_Param['VarName']=Var
 				#Maybe we want to check if the variable is actually supported
-				ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', Model+'_'+Var+'.txt')
+				#ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', Model+'_'+Var+'.txt')
+				ModellistFile=os.path.join(dict_Param['OutputDir'], Model+'_'+Var+'.txt')
 				#write IDL include file
 				try:
 					WriteIDLIncludeFile.WriteIDLIncludeFile(dict_Param)
