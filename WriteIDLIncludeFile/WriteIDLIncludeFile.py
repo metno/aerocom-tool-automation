@@ -167,6 +167,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		c_ModelVars=['OD550GT1_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunSDADaily]
 	"""
+		#;i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	dict_IncludeFileData['VARS']['od550lt1aer']= """
 		c_ModelVars=['OD550LT1_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunSDADaily]
@@ -372,6 +373,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['vmrco']="""
 		c_ModelVars=['VMR_CO']
 	"""
+	dict_IncludeFileData['VARS']['vmrso2']="""
+		c_ModelVars=['SCONC_SO2']
+	"""
 	dict_IncludeFileData['VARS']['vmrurbo3']="""
 		c_ModelVars=['VMRURB_O3']
 	"""
@@ -542,6 +546,12 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['OBSNETWORKS']['AeronetSunV3L15Daily']= """
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunV3L15Daily]
+	"""
+	dict_IncludeFileData['OBSNETWORKS']['AeronetSunV3L20Daily']= """
+		i_ObsNetworktype=[iC_ObsNet_AeronetSunV3L20Daily]
+	"""
+	dict_IncludeFileData['OBSNETWORKS']['AeronetSDAV3L20Daily']= """
+		i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	"""
 	#what we return might depend on the variables and some features at some point
 	#but keep it simple for now, but save space with the common block

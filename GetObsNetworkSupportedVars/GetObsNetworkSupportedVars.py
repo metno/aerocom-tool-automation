@@ -56,6 +56,7 @@ def GetObsNetworkSupportedVars(tooldir, ObsNetworkIn, VerboseFlag=False, DebugFl
 	ObsnetworkSupported.append('iC_ObsNet_AeronetSunRaw20')
 	ObsnetworkSupported.append('iC_ObsNet_AeronetSun20AllPoints')
 	ObsnetworkSupported.append('iC_ObsNet_AeronetSunV3L15Daily')
+	ObsnetworkSupported.append('iC_ObsNet_AeronetSunV3L20Daily')
 	ObsnetworkSupported.append('iC_ObsNet_AeronetSunSDADaily')
 	ObsnetworkSupported.append('iC_ObsNet_EBASMultiColumn')
 	ObsnetworkSupported.append('iC_ObsNet_AIRBASE')
@@ -66,12 +67,15 @@ def GetObsNetworkSupportedVars(tooldir, ObsNetworkIn, VerboseFlag=False, DebugFl
 	ObsnetworkSupported.append('iC_ObsNet_AeronetForcing')
 	ObsnetworkSupported.append('iC_ObsNet_EBASNRT')
 	ObsnetworkSupported.append('iC_ObsNet_WOUDCOzoneSonds')
+	ObsnetworkSupported.append('iC_ObsNet_AeronetSDAV3L20')
 
 	dict_ToolsObsnetworkName={}
 	dict_ToolsObsnetworkName['AERONETSun2.0']='iC_ObsNet_AeronetSunRaw20'
 	dict_ToolsObsnetworkName['AERONETSunNRT']='iC_ObsNet_AeronetSunNRT'
 	dict_ToolsObsnetworkName['AeronetSunSDADaily']='iC_ObsNet_AeronetSunSDADaily'
 	dict_ToolsObsnetworkName['AeronetSunV3L15Daily']='iC_ObsNet_AeronetSunV3L15Daily'
+	dict_ToolsObsnetworkName['AeronetSunV3L20Daily']='iC_ObsNet_AeronetSunV3L20Daily'
+	dict_ToolsObsnetworkName['AeronetSDAV3L20Daily']='iC_ObsNet_AeronetSDAV3L20'
 	dict_ToolsObsnetworkName['EAAQeRep']='iC_ObsNet_AirbaseEEA'
 	dict_ToolsObsnetworkName['EBASMC']='iC_ObsNet_EBASMultiColumn'
 
