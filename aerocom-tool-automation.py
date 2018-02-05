@@ -74,7 +74,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='aerocom-automation-tools\nProgram to automate aerocom-tool plotting based on just the model name\n\n')
 	parser.add_argument("model", help="model names to use; can be a comma separated list;use "+ObsOnlyModelName+" for observations only")
 	parser.add_argument("--variable", help="Run only a list of variables. List has to be comma seperated.")
-	parser.add_argument("--modelyear", help="model years to run; use 9999 for climatology, leave out for all years; comma separated list")
+	parser.add_argument("--modelyear", help="model years to run; use 9999 for climatology, leave out for all years; comma separated list; Use this to limit the plotting of the OBSERVATION-ONLY model to certain years.")
 	parser.add_argument("--obsyear", help="observation years to run; use 9999 for climatology, leave out for same as model year")
 	if ToolDir is None:
 		parser.add_argument("--tooldir", help="set the directory of the aerocom-tools; WARNING no tool dir found. Please provide one!")
@@ -88,8 +88,8 @@ if __name__ == '__main__':
 	parser.add_argument("--numcpu", help="Number of Processes to start. Default is using half of the number of logical cores available.",type=int)
 	parser.add_argument("--idl", help="location of the idl binary. Uses $IDL_DIR/bin/idl as default")
 
-	parser.add_argument("--outputdir", help="directory where the idl include files will be put. Default is <tooldir>/batching. Directory needs to exist.")
-	parser.add_argument("--obsnetwork", help="run all variables for a certain obs network; Supported are "+SupportedObsNetworks)
+	parser.add_argument("--outputdir", help="directory where the idl include files will be put. Default is <tooldir>/batching/<user name>. Directory needs to exist.")
+	parser.add_argument("--obsnetwork", help="OBERVATIONS-ONLY mode: run all variables for a certain obs network; model mode: Run a variable with a non standard obs network. Supported are "+SupportedObsNetworks)
 	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
 	parser.add_argument("--htapfilters", help="also run the htap filters; model has to have 1x1 degree resolution at the moment",action='store_true')
 	parser.add_argument("--aodtrends", help="run the AODTREND filters AODTREND95TO12,AODTREND,AODTREND95",action='store_true')
