@@ -66,8 +66,8 @@ if __name__ == '__main__':
 	if not os.path.isdir(ToolDir):
 		ToolDir = None
 		
-	User = None
-	User = os.environ['USER']
+	user = None
+	user = getpass.getuser()
 
 	#command line interface using argparse
 	dict_Param={}
@@ -190,7 +190,7 @@ if __name__ == '__main__':
 			sys.stderr.write('Error: supplied output dir for idl include files does not exist.\n')
 			sys.exit(2)
 	else:
-		dict_Param['OutputDir']=os.path.join(dict_Param['ToolDir'],'batching',User)
+		dict_Param['OutputDir']=os.path.join(dict_Param['ToolDir'],'batching',user)
 
 	#create user specific batching directory
 	try:
@@ -199,9 +199,9 @@ if __name__ == '__main__':
 		pass
 
 	if args.obsnetwork:
-		dict_Param['ObsnetworksToRun']=args.obsnetwork.split(',')[0]
+		dict_Param['ObsnetworksToRun']=args.obsnetwork.split(',')
 		#use the 1st for model plotting for now
-		dict_Param['ObsNetworkName']=args.obsnetwork.split(',')[0]
+		dict_Param['ObsNetworkName']=args.obsnetwork.split(',')
 
 	if args.forecast:
 		dict_Param['FORECAST']=args.forecast
@@ -329,20 +329,42 @@ if __name__ == '__main__':
 						sys.stderr.write('Continuing with the other variables.\n')
 					continue
 
-					
-				#pdb.set_trace()
-				#now write the idl include file
-				#one per variable
-				dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],Model+'_'+Var+'_include.pro')
-				dict_Param['VarName']=Var
-				#Maybe we want to check if the variable is actually supported
-				#ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', Model+'_'+Var+'.txt')
-				ModellistFile=os.path.join(dict_Param['OutputDir'], Model+'_'+Var+'.txt')
-				#write IDL include file
-				try:
-					WriteIDLIncludeFile.WriteIDLIncludeFile(dict_Param)
-				except SystemExit:
-					pass
+				#loop through the obsnetworks if these were set by the command line
+				if args.obsnetwork:
+					if len(dict_Param['ObsnetworksToRun']) > 1:
+						sys.stderr.write('ERROR: running several user defined obs networks at once is not yet supported.\n')
+						sys.stderr.write('Please run them using several commands at this point and contact jang to get\n')
+						sys.stderr.write('this feature implemented. Exiting now.\n')
+						sys.exit(4)
+						
+					for ObsNetWork in dict_Param['ObsnetworksToRun']:
+						#determine variables
+						dict_Param['ObsNetworkName']=ObsNetWork
+						#now write the idl include file
+						#one per variable
+						dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],Model+'_'+Var+'_'+ObsNetWork+'_include.pro')
+						dict_Param['VarName']=Var
+						#Maybe we want to check if the variable is actually supported
+						#ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', Model+'_'+Var+'.txt')
+						ModellistFile=os.path.join(dict_Param['OutputDir'], Model+'_'+Var+'.txt')
+						#write IDL include file
+						try:
+							WriteIDLIncludeFile.WriteIDLIncludeFile(dict_Param)
+						except SystemExit:
+							pass
+				else:
+					#now write the idl include file
+					#one per variable
+					dict_Param['IDLOutFile']=os.path.join(dict_Param['OutputDir'],Model+'_'+Var+'_include.pro')
+					dict_Param['VarName']=Var
+					#Maybe we want to check if the variable is actually supported
+					#ModellistFile=os.path.join(dict_Param['ToolDir'],'batching', Model+'_'+Var+'.txt')
+					ModellistFile=os.path.join(dict_Param['OutputDir'], Model+'_'+Var+'.txt')
+					#write IDL include file
+					try:
+						WriteIDLIncludeFile.WriteIDLIncludeFile(dict_Param)
+					except SystemExit:
+						pass
 
 				#For the include file we have some 'pseudo variables' for special purposes like the
 				#dust forecast.
@@ -387,10 +409,7 @@ if __name__ == '__main__':
 					#cmd=[dict_Param['SCRIPT'], '-d', '-L', '-m', dict_Param['IDL'], '-queue', '-e' , IdlCmd]
 					CmdArr.append(cmd)
 
-	
-
 	#common part
-	user = getpass.getuser()
 	try:
 		MaxNumOfTasksToStart=dict_Param['NumCPU']
 	except KeyError: 
