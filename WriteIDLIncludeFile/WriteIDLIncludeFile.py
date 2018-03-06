@@ -216,6 +216,12 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['wetss']="""
 		c_ModelVars=['WET_SS']
 	"""
+	dict_IncludeFileData['VARS']['wetoxn']="""
+		c_ModelVars=['WET_OXN']
+	"""
+	dict_IncludeFileData['VARS']['wetrdn']="""
+		c_ModelVars=['WET_RDN']
+	"""
 
 	dict_IncludeFileData['VARS']['emidust']="""
 		c_ModelVars=['EMI_DUST']
@@ -420,6 +426,18 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	dict_IncludeFileData['VARS']['zdust']="""
 		c_ModelVars=['Z_DUST']
+	"""
+	dict_IncludeFileData['VARS']['meteoprec']="""
+		c_ModelVars=['METEO_PREC']
+	"""
+	dict_IncludeFileData['VARS']['concprcpso4']="""
+		c_ModelVars=['CONCPRCP_SO4']
+	"""
+	dict_IncludeFileData['VARS']['concprcpno3']="""
+		c_ModelVars=['CONCPRCP_NO3']
+	"""
+	dict_IncludeFileData['VARS']['concprcpnh4']="""
+		c_ModelVars=['CONCPRCP_NH4']
 	"""
 	#dict_IncludeFileData['VARS']['']="""
 		#c_ModelVars=['']
