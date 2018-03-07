@@ -93,6 +93,7 @@ if __name__ == '__main__':
 	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
 	parser.add_argument("--htapfilters", help="also run the htap filters; model has to have 1x1 degree resolution at the moment",action='store_true')
 	parser.add_argument("--aodtrends", help="run the AODTREND filters AODTREND95TO12,AODTREND,AODTREND95",action='store_true')
+	parser.add_argument("--plotdailyts", help="also plot daily time series",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -205,6 +206,10 @@ if __name__ == '__main__':
 
 	if args.forecast:
 		dict_Param['FORECAST']=args.forecast
+
+	if args.plotdailyts:
+		dict_Param['PLOTDAILYTIMESERIES']=args.plotdailyts
+
 
 	hostname=socket.gethostname()
 	CmdArr=[]
