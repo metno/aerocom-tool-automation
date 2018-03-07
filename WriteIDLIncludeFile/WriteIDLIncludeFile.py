@@ -98,6 +98,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['SEND']="""
 		i_SendFlag=1
 	"""
+	dict_IncludeFileData['FLAGS']['PLOTDAILYTIMESERIES']="""
+		i_PlotAERONETTimeseriesPlotArr=[iC_YM,iC_3MD]
+	"""
 	dict_IncludeFileData['FLAGS']['EXPORT']="""
 		i_PlotZonalMeansFlag=0
 		i_PlotModelAERONETTimeSeriesFlag=0
@@ -659,6 +662,13 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 	except KeyError:
 		pass
 	
+	#include daily time series plots 
+	try:
+		if dict_Param['PLOTDAILYTIMESERIES'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','PLOTDAILYTIMESERIES'))
+	except KeyError:
+		pass
+	
 	#forecast mode (daily map plots)
 	try:
 		if dict_Param['FORECAST'] is True:
@@ -734,6 +744,7 @@ if __name__ == '__main__':
 	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
 	parser.add_argument("--aodtrends", help="run only the filters AODTREND and AODTREND95",action='store_true')
 	parser.add_argument("--exportobsdata", help="export the obs data to text files",action='store_true')
+	parser.add_argument("--plotdailyts", help="also plot daily time series",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -784,6 +795,9 @@ if __name__ == '__main__':
 
 	if args.exportobsdata:
 		dict_Param['EXPORTOBSDATA']=args.exportobsdata
+
+	if args.plotdailyts:
+		dict_Param['PLOTDAILYTIMESERIES']=args.plotdailyts
 
 	#if '' not in dict_Param.keys():
 	#pdb.set_trace()
