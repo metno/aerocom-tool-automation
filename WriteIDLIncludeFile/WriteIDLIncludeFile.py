@@ -76,6 +76,13 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['SUBVARS']= """
 		i_ReadSubVarsFlag=1
 	"""
+	dict_IncludeFileData['FLAGS']['ADDSUBVARS']= """
+		i_ReadSubVarsFlag=1
+		c_SubVars=strarr(n_elements(c_modelvars),7)
+		c_SubVars[*,*]=['DUMMY']
+		; c_SubVars[0,0:6]=['OD550_SO4', 'OD550_DUST', 'OD550_BC', 'OD550_POM', 'OD550_SS','OD550_NO3','OD550_AERH2O']
+		c_SubVars[0,0:4]=['OD550_SO4', 'OD550_DUST', 'OD550_BC', 'OD550_POM', 'OD550_SS']
+	"""
 	dict_IncludeFileData['FLAGS']['FORECAST']="""
 		i_ReadSubVarsFlag=0
 		c_ObsNetworkDataType=['D']
@@ -634,6 +641,13 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 	except KeyError:
 		pass
 	
+	#no addsubvars flag
+	try:
+		if dict_Param['ADDSUBVARS'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','ADDSUBVARS'))
+	except KeyError:
+		pass
+	
 	#no send flag
 	try:
 		if dict_Param['NOSEND'] is True:
@@ -745,6 +759,7 @@ if __name__ == '__main__':
 	parser.add_argument("--aodtrends", help="run only the filters AODTREND and AODTREND95",action='store_true')
 	parser.add_argument("--exportobsdata", help="export the obs data to text files",action='store_true')
 	parser.add_argument("--plotdailyts", help="also plot daily time series",action='store_true')
+	parser.add_argument("--addsubvars", help="add sub variables; works only for the variable od550aer atm.",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -798,6 +813,9 @@ if __name__ == '__main__':
 
 	if args.plotdailyts:
 		dict_Param['PLOTDAILYTIMESERIES']=args.plotdailyts
+
+	if args.addsubvars:
+		dict_Param['ADDSUBVARS']=args.addsubvars
 
 	#if '' not in dict_Param.keys():
 	#pdb.set_trace()

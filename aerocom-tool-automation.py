@@ -94,6 +94,7 @@ if __name__ == '__main__':
 	parser.add_argument("--htapfilters", help="also run the htap filters; model has to have 1x1 degree resolution at the moment",action='store_true')
 	parser.add_argument("--aodtrends", help="run the AODTREND filters AODTREND95TO12,AODTREND,AODTREND95",action='store_true')
 	parser.add_argument("--plotdailyts", help="also plot daily time series",action='store_true')
+	parser.add_argument("--addsubvars", help="add sub variables; works only for the variable od550aer atm.",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -210,6 +211,9 @@ if __name__ == '__main__':
 	if args.plotdailyts:
 		dict_Param['PLOTDAILYTIMESERIES']=args.plotdailyts
 
+	if args.addsubvars:
+		dict_Param['ADDSUBVARS']=args.addsubvars
+
 
 	hostname=socket.gethostname()
 	CmdArr=[]
@@ -264,7 +268,7 @@ if __name__ == '__main__':
 						ObsStartYear=int(IniFileData['ObsStartYears']['All'])
 						
 					#pdb.set_trace()
-					Years=list(map(str,range(ObsStartYear,2018)))
+					Years=list(map(str,range(ObsStartYear,2019)))
 
 					if dict_Param['VERBOSE'] == True:
 						sys.stderr.write('File "'+dict_Param['IDLOutFile']+'" written\n')
