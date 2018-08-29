@@ -182,6 +182,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		c_ModelVars=['OD550LT1_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunSDADaily]
 	"""
+	dict_IncludeFileData['VARS']['od550strataer']= """
+		c_ModelVars=['OD550STRAT_AER']
+	"""
 	dict_IncludeFileData['VARS']['od550dust']= """
 		c_ModelVars=['OD550_DUST']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunSDADaily]
