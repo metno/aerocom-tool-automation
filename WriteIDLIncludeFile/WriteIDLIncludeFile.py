@@ -440,6 +440,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['zdust']="""
 		c_ModelVars=['Z_DUST']
 	"""
+	dict_IncludeFileData['VARS']['zaerosol']="""
+		c_ModelVars=['Z_AEROSOL']
+	"""
 	dict_IncludeFileData['VARS']['meteoprec']="""
 		c_ModelVars=['METEO_PREC']
 	"""
