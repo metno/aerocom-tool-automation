@@ -92,9 +92,11 @@ if __name__ == '__main__':
 	parser.add_argument("--obsnetwork", help="OBERVATIONS-ONLY mode: run all variables for a certain obs network; model mode: Run a variable with a non standard obs network. Supported are "+SupportedObsNetworks)
 	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
 	parser.add_argument("--htapfilters", help="also run the htap filters; model has to have 1x1 degree resolution at the moment",action='store_true')
+	parser.add_argument("--htapfiltersonly", help="only include the HTAP pixel based filters",action='store_true')
 	parser.add_argument("--aodtrends", help="run the AODTREND filters AODTREND95TO12,AODTREND,AODTREND95",action='store_true')
 	parser.add_argument("--plotdailyts", help="also plot daily time series",action='store_true')
 	parser.add_argument("--addsubvars", help="add sub variables; works only for the variable od550aer atm.",action='store_true')
+	parser.add_argument("--notimeseries", help="switch off time series plotting",action='store_true')
 	#parser.add_argument("--", help="")
 
 	args = parser.parse_args()
@@ -213,6 +215,13 @@ if __name__ == '__main__':
 
 	if args.addsubvars:
 		dict_Param['ADDSUBVARS']=args.addsubvars
+
+	if args.notimeseries:
+		dict_Param['NOTIMESERIES']=args.notimeseries
+
+	if args.htapfiltersonly:
+		dict_Param['HTAPFILTERSONLY']=args.htapfiltersonly
+
 
 
 	hostname=socket.gethostname()

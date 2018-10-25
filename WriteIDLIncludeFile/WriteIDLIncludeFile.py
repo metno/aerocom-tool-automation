@@ -105,6 +105,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['SEND']="""
 		i_SendFlag=1
 	"""
+	dict_IncludeFileData['FLAGS']['NOTIMESERIES']="""
+		i_PlotModelAERONETTimeSeriesFlag=0
+	"""
 	dict_IncludeFileData['FLAGS']['PLOTDAILYTIMESERIES']="""
 		i_PlotAERONETTimeseriesPlotArr=[iC_YM,iC_3MD]
 	"""
@@ -661,10 +664,24 @@ def WriteIDLIncludeFile(dict_Param, VerboseFlag=False, DebugFlag=False, ExitFlag
 	except KeyError:
 		pass
 	
+	#NOTIMESERIES
+	try:
+		if dict_Param['NOTIMESERIES'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','NOTIMESERIES'))
+	except KeyError:
+		pass
+
 	#include HTAP filters
 	try:
 		if dict_Param['HTAPFILTERS'] is True:
 			RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERS'))
+	except KeyError:
+		pass
+
+	#include HTAP filters only
+	try:
+		if dict_Param['HTAPFILTERSONLY'] is True:
+			RetValArr.append(GetIDLIncludeFileText('FLAGS','HTAPFILTERSONLY'))
 	except KeyError:
 		pass
 			
@@ -761,12 +778,14 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--nosend", help="switch off webserver upload", action='store_true')
 	parser.add_argument("-l","--listvars", help="list the supported variables", action='store_true')
 	parser.add_argument("--htapfilters", help="also include the HTAP pixel based filters",action='store_true')
+	parser.add_argument("--htapfiltersonly", help="only include the HTAP pixel based filters",action='store_true')
 	parser.add_argument("--forecast", help="forecast mode for CAMS; daily maps only, nothing else",action='store_true')
 	parser.add_argument("--aodtrends", help="run only the filters AODTREND and AODTREND95",action='store_true')
 	parser.add_argument("--exportobsdata", help="export the obs data to text files",action='store_true')
 	parser.add_argument("--plotdailyts", help="also plot daily time series",action='store_true')
 	parser.add_argument("--addsubvars", help="add sub variables; works only for the variable od550aer atm.",action='store_true')
 	#parser.add_argument("--", help="")
+	parser.add_argument("--notimeseries", help="switch off time series plotting",action='store_true')
 
 	args = parser.parse_args()
 
@@ -805,8 +824,14 @@ if __name__ == '__main__':
 	if args.nosend:
 		dict_Param['NOSEND']=args.nosend
 
+	if args.notimeseries:
+		dict_Param['NOTIMESERIES']=args.notimeseries
+
 	if args.htapfilters:
 		dict_Param['HTAPFILTERS']=args.htapfilters
+
+	if args.htapfiltersonly:
+		dict_Param['HTAPFILTERSONLY']=args.htapfiltersonly
 
 	if args.forecast:
 		dict_Param['FORECAST']=args.forecast
