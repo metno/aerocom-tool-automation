@@ -416,6 +416,29 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		I_PLOTPROFILESFLAG=4
 		i_ReadStationBasedModelData=1
 	"""
+	### mmr variables
+	dict_IncludeFileData['VARS']['mmrss']="""
+		c_ModelVars=['MMR_SS']
+	"""
+	dict_IncludeFileData['VARS']['mmrdust']="""
+		c_ModelVars=['MMR_DUST']
+	"""
+	dict_IncludeFileData['VARS']['mmroa']="""
+		c_ModelVars=['MMR_OA']
+	"""
+	dict_IncludeFileData['VARS']['mmrbc']="""
+		c_ModelVars=['MMR_BC']
+	"""
+	dict_IncludeFileData['VARS']['mmrno3']="""
+		c_ModelVars=['MMR_NO3']
+	"""
+	dict_IncludeFileData['VARS']['mmrnh4']="""
+		c_ModelVars=['MMR_NH4']
+	"""
+	dict_IncludeFileData['VARS']['vmrdms']="""
+		c_ModelVars=['VMR_DMS']
+	"""
+	### mmr variables end
 	dict_IncludeFileData['VARS']['abs550aer']="""
 		c_ModelVars=['ABS550_AER']
 	"""
