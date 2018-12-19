@@ -438,6 +438,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['vmrdms']="""
 		c_ModelVars=['VMR_DMS']
 	"""
+	dict_IncludeFileData['VARS']['mmrso4']="""
+		c_ModelVars=['MMR_SO4']
+	"""
 	### mmr variables end
 	dict_IncludeFileData['VARS']['abs550aer']="""
 		c_ModelVars=['ABS550_AER']
