@@ -40,6 +40,7 @@ import GetObsNetworkSupportedVars
 
 if __name__ == '__main__':
 	import configparser
+	max_year = 2019
 
 	#get all supported obs networks to use that in the text
 	dict_SupportStruct=WriteIDLIncludeFile.GetIDLIncludeFileText('nogroup','whatever', all=True)
@@ -279,7 +280,7 @@ if __name__ == '__main__':
 						ObsStartYear=int(IniFileData['ObsStartYears']['All'])
 						
 					#pdb.set_trace()
-					Years=list(map(str,range(ObsStartYear,2019)))
+					Years=list(map(str,range(ObsStartYear,max_year)))
 
 					if dict_Param['VERBOSE'] == True:
 						sys.stderr.write('File "'+dict_Param['IDLOutFile']+'" written\n')
