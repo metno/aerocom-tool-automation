@@ -69,6 +69,8 @@ if __name__ == '__main__':
 	user = None
 	user = getpass.getuser()
 
+	default_num_cpu = 4
+
 	#command line interface using argparse
 	dict_Param={}
 	parser = argparse.ArgumentParser(description='aerocom-automation-tools\nProgram to automate aerocom-tool plotting based on just the model name\n\n')
@@ -85,7 +87,7 @@ if __name__ == '__main__':
 	parser.add_argument("-v","--verbose", help="switch on verbosity",action='store_true')
 	parser.add_argument("--script", help="script to start; defaults to <tooldir>/StartScreenWithLogging.sh")
 	parser.add_argument("--debug", help="switch on debug mode: Do NOT start idl, just print what would be done",action='store_true')
-	parser.add_argument("--numcpu", help="Number of Processes to start. Default is using half of the number of logical cores available.",type=int)
+	parser.add_argument("--numcpu", help="Number of Processes to start. Default is using {}.".format(default_num_cpu),type=int,default=default_num_cpu)
 	parser.add_argument("--idl", help="location of the idl binary. Uses $IDL_DIR/bin/idl as default")
 
 	parser.add_argument("--outputdir", help="directory where the idl include files will be put. Default is <tooldir>/batching/<user name>. Directory needs to exist.")
