@@ -418,28 +418,28 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	"""
 	### mmr variables
 	dict_IncludeFileData['VARS']['mmrss']="""
-		c_ModelVars=['MMR_SS']
+		c_ModelVars=['SCONC_SS']
 	"""
 	dict_IncludeFileData['VARS']['mmrdust']="""
-		c_ModelVars=['MMR_DUST']
+		c_ModelVars=['SCONC_DUST']
 	"""
 	dict_IncludeFileData['VARS']['mmroa']="""
-		c_ModelVars=['MMR_OA']
+		c_ModelVars=['SCONC_OA']
 	"""
 	dict_IncludeFileData['VARS']['mmrbc']="""
-		c_ModelVars=['MMR_BC']
+		c_ModelVars=['SCONC_BC']
 	"""
 	dict_IncludeFileData['VARS']['mmrno3']="""
-		c_ModelVars=['MMR_NO3']
+		c_ModelVars=['SCONC_NO3']
 	"""
 	dict_IncludeFileData['VARS']['mmrnh4']="""
-		c_ModelVars=['MMR_NH4']
+		c_ModelVars=['SCONC_NH4']
 	"""
 	dict_IncludeFileData['VARS']['vmrdms']="""
 		c_ModelVars=['VMR_DMS']
 	"""
 	dict_IncludeFileData['VARS']['mmrso4']="""
-		c_ModelVars=['MMR_SO4']
+		c_ModelVars=['SCONC_SO4']
 	"""
 	### mmr variables end
 	dict_IncludeFileData['VARS']['abs550aer']="""
