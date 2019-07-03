@@ -484,6 +484,9 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['concprcpnh4']="""
 		c_ModelVars=['CONCPRCP_NH4']
 	"""
+	dict_IncludeFileData['VARS']['tcolno2']="""
+		c_ModelVars=['TCOL_NO2']
+	"""
 	#dict_IncludeFileData['VARS']['']="""
 		#c_ModelVars=['']
 	#"""
