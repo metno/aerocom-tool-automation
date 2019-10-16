@@ -171,12 +171,12 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['od550aer']= """
 		c_ModelVars=['OD550_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunRaw20]
-		i_ObsNetworktype=[C_ObsNet_AeronetSDAV3L20]
+		i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	"""
 	dict_IncludeFileData['VARS']['od550csaer']= """
 		c_ModelVars=['OD550CS_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunRaw20]
-		i_ObsNetworktype=[C_ObsNet_AeronetSDAV3L20]
+		i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	"""
 	dict_IncludeFileData['VARS']['od550gt1aer']= """
 		c_ModelVars=['OD550GT1_AER']
@@ -199,17 +199,17 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['VARS']['ang6787aer']= """
 		c_ModelVars=['ANG6787_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunRaw20]
-		i_ObsNetworktype=[C_ObsNet_AeronetSDAV3L20]
+		i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	"""
 	dict_IncludeFileData['VARS']['ang4487aer']= """
 		c_ModelVars=['ANG4487_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunRaw20]
-		i_ObsNetworktype=[C_ObsNet_AeronetSDAV3L20]
+		i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	"""
 	dict_IncludeFileData['VARS']['ang4487csaer']= """
 		c_ModelVars=['ANG4487CS_AER']
 		i_ObsNetworktype=[iC_ObsNet_AeronetSunRaw20]
-		i_ObsNetworktype=[C_ObsNet_AeronetSDAV3L20]
+		i_ObsNetworktype=[iC_ObsNet_AeronetSDAV3L20]
 	"""
 	dict_IncludeFileData['VARS']['od550bc']="""
 		c_ModelVars=['OD550_BC']
