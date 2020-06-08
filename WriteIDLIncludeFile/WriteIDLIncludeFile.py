@@ -120,7 +120,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['HTAPFILTERS']= """
 		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
 		'EURhtap','OCNhtap','SEAhtap', 'LANDhtap','NAMhtap','ASIA','WORLD','NAFRICA','NAMERICA','SAMERICA',$
-		'EUROPE','EASTASIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		'EUROPE','EASTASIA','INDIA','CHINA','WORLD-wMOUNTAINS','N-HEMISPHERE','S-HEMISPHERE','CAMS50']
 	"""
 	dict_IncludeFileData['FLAGS']['HTAPFILTERSONLY']= """
 		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
