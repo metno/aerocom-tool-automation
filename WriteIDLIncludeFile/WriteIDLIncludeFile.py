@@ -62,7 +62,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 		i_PlotModelAERONETTimeSeriesFlag=1
 		i_PlotAERONETTimeseriesPlotArr=[iC_YM]
 		s_PlotTableFlag=['SCORE','SCATTERLOG','SCATTERDENSITY','HISTO','SITELOCATION','ZONALOBS','STATMAP-BIAS','STATMAP-R']
-		c_MicStationFilters=['N-HEMISPHERE','S-HEMISPHERE','CAMS50','WORLD','AUSTRALIA','NAFRICA','NAMERICA','SAMERICA','EUROPE','EASTASIA','ASIA','INDIA','CHINA','WORLD-wMOUNTAINS']
+		c_MicStationFilters=['NHEMISPHERE','SHEMISPHERE','CAMS50','WORLD','AUSTRALIA','NAFRICA','NAMERICA','SAMERICA','EUROPE','EASTASIA','ASIA','INDIA','CHINA','WORLD-wMOUNTAINS']
 		c_TimeSlots=[c_ModelMonths]
 		i_PlotMapFlag=11 ; none=0 || M=1 || Y=È || MY =3 || MYSeasons =11 
 		i_MakePNG=1
@@ -120,7 +120,7 @@ def GetIDLIncludeFileText(Group, Variable, all=False):
 	dict_IncludeFileData['FLAGS']['HTAPFILTERS']= """
 		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
 		'EURhtap','OCNhtap','SEAhtap', 'LANDhtap','NAMhtap','ASIA','WORLD','NAFRICA','NAMERICA','SAMERICA',$
-		'EUROPE','EASTASIA','INDIA','CHINA','WORLD-wMOUNTAINS','N-HEMISPHERE','S-HEMISPHERE','CAMS50']
+		'EUROPE','EASTASIA','INDIA','CHINA','WORLD-wMOUNTAINS','NHEMISPHERE','SHEMISPHERE','CAMS50']
 	"""
 	dict_IncludeFileData['FLAGS']['HTAPFILTERSONLY']= """
 		c_MicStationFilters=['RBUhtap','MCAhtap','SAMhtap','MDEhtap','SAFhtap','NAFhtap','PANhtap', 'EAShtap', 'SAShtap', $
